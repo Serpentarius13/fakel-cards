@@ -8,6 +8,12 @@ body {
   padding: 170px 290px 249px 290px;
 }
 
+@media screen and (max-width: 1024px) {
+  .container {
+    padding: 170px 50px;
+  }
+}
+
 .main-heading {
   font-size: 32px;
   font-weight: 700;
