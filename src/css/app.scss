@@ -7,3 +7,24 @@ body {
 .container {
   padding: 170px 290px 249px 290px;
 }
+
+.main-heading {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.caption {
+  font-size: 12px;
+}
+
+.q-btn-dropdown {
+  i {
+    color: #D5DCE5;
+    position: relative;
+
+    &::before {
+      position: absolute;
+      content: url("../assets/toggle.svg");
+    }
+  }
+}
