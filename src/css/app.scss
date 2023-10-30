@@ -15,6 +15,32 @@ body {
 
 .caption {
   font-size: 12px;
+
+  &.bold-caption {
+    font-weight: 600;
+  }
+}
+
+.card {
+  width: 100%;
+  max-width: 350px;
+
+  .card-heading {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .card-section {
+    height: 120px;
+    padding: 12px 12px;
+    border-radius: 4px;
+  }
+
+  .project {
+    width: 100%;
+    max-width: 80px;
+    padding: 4px 8px;
+  }
 }
 
 .q-btn-dropdown {
