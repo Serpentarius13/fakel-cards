@@ -53,7 +53,23 @@ body {
   }
 }
 
-.q-btn-dropdown {
+.modal-card {
+  padding: 30px;
+  width: 100%;
+  max-width: 380px;
+
+  &-heading {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .score {
+    width: 100%;
+    max-width: 80px;
+  }
+}
+
+.q-select {
   i {
     color: #D5DCE5;
     position: relative;
@@ -63,4 +79,14 @@ body {
       content: url("../assets/toggle.svg");
     }
   }
+}
+
+.q-field__control {
+  &::before, &::after {
+    border: 0 !important;
+  }
+}
+
+.q-field__native > span {
+  color: #71747C;
 }

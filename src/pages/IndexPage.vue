@@ -7,15 +7,13 @@
           <div class="text-primary caption">
             <span>Проект:</span>
           </div>
-          <q-btn-dropdown
-            class="custom-dropdown-toggle"
-            text-color="info"
-            no-caps
-            color="warning"
-            unelevated
-            label="Не выбрано"
-          >
-          </q-btn-dropdown>
+          <q-select
+            dense
+            outlined
+            bg-color="warning"
+            v-model="select"
+            :options="options"
+          />
           <q-btn
             no-caps
             class="q-px-lg"
@@ -87,8 +85,9 @@
               <span class="text-info">Проект 1</span>
             </q-card>
           </div>
-          <div class="row justify-center q-mt-md">
-            <q-btn
+        </q-card-section>
+        <q-card-actions class="q-pt-none q-pb-md" vertical align="center">
+          <q-btn
               @click="modal = true"
               flat
               no-caps
@@ -96,8 +95,7 @@
               color="warning"
               text-color="primary"
             />
-          </div>
-        </q-card-section>
+        </q-card-actions>
       </q-card>
       <q-card flat class="bg-warning card">
         <q-card-section>
@@ -124,31 +122,73 @@
               <span>Список пуст</span>
             </div>
           </div>
-          <div class="row justify-center q-mt-md">
-            <q-btn
-              @click="modal = true"
-              flat
-              no-caps
-              label="Добавить"
-              color="warning"
-              text-color="primary"
-            />
-          </div>
         </q-card-section>
+        <q-card-actions class="q-pt-none q-pb-md" vertical align="center">
+          <q-btn
+            @click="modal = true"
+            flat
+            no-caps
+            label="Добавить"
+            color="warning"
+            text-color="primary"
+          />
+        </q-card-actions>
       </q-card>
     </section>
     <q-dialog v-model="modal">
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">Alert</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup />
+      <q-card flat class="modal-card">
+        <div class="row justify-between">
+          <div class="modal-card-heading">
+            <div>Добавление</div>
+            <div class="text-primary caption">Стадия 1</div>
+          </div>
+          <div class="self-start q-mt-xs">
+            <img
+              class="cursor-pointer"
+              src ="../assets/close.svg"
+              alt="close"
+              @click="modal = false"
+            />
+          </div>
+        </div>
+        <div class="q-mt-md">
+          <div class="text-primary caption">Заголовок *:</div>
+          <q-input
+            dense
+            outlined
+            bg-color="positive"
+            v-model="text"
+          />
+        </div>
+        <div class="q-mt-md">
+          <div class="text-primary caption">Проект:</div>
+          <q-select
+            dense
+            outlined
+            bg-color="positive"
+            v-model="select"
+            :options="options"
+          />
+        </div>
+        <div class="q-mt-md">
+          <div class="text-primary caption">Балл *:</div>
+          <q-input
+            class="score"
+            dense
+            outlined
+            bg-color="positive"
+            v-model="text"
+          />
+        </div>
+        <q-card-actions vertical align="center">
+          <q-btn
+            style="padding: 0 1rem"
+            @click="modal = true"
+            no-caps
+            label="Добавить"
+            color="accent"
+            unelevated
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -156,7 +196,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 
 const modal = ref<boolean>(false)
+const text = ref<string>('')
+const select = ref<string>('Не выбрано')
+const options = reactive<string[]>([
+  'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
+])
 </script>
