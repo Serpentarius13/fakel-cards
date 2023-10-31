@@ -87,6 +87,9 @@
               <span class="text-info">Проект 1</span>
             </q-card>
           </div>
+          <div class="row justify-center q-mt-md">
+            <q-btn flat no-caps label="Добавить" color="warning" text-color="primary" />
+          </div>
         </q-card-section>
       </q-card>
       <q-card flat class="bg-warning card">
@@ -141,6 +144,9 @@
             <q-card flat bordered class="bg-warning flex flex-center project">
               <span class="text-info">Проект 1</span>
             </q-card>
+          </div>
+          <div class="row justify-center q-mt-md">
+            <q-btn flat no-caps label="Добавить" color="warning" text-color="primary" />
           </div>
         </q-card-section>
       </q-card>
