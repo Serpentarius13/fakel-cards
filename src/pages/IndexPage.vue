@@ -15,6 +15,7 @@
             :options="options"
           />
           <q-btn
+            to="/add"
             no-caps
             class="q-px-lg"
             color="accent"
@@ -86,7 +87,7 @@
             </q-card>
           </div>
         </q-card-section>
-        <q-card-actions class="q-pt-none q-pb-md" vertical align="center">
+        <q-card-actions class="q-pt-none q-pb-md" align="center">
           <q-btn
               @click="modal = true"
               flat
@@ -123,7 +124,7 @@
             </div>
           </div>
         </q-card-section>
-        <q-card-actions class="q-pt-none q-pb-md" vertical align="center">
+        <q-card-actions class="q-pt-none q-pb-md" align="center">
           <q-btn
             @click="modal = true"
             flat
@@ -139,7 +140,7 @@
       <q-card flat class="modal-card">
         <div class="row justify-between">
           <div class="modal-card-heading">
-            <div>Добавление</div>
+            <p>Добавление</p>
             <div class="text-primary caption">Стадия 1</div>
           </div>
           <div class="self-start q-mt-xs">
@@ -180,7 +181,7 @@
             v-model="text"
           />
         </div>
-        <q-card-actions vertical align="center">
+        <q-card-actions align="center">
           <q-btn
             style="padding: 0 1rem"
             @click="modal = true"
