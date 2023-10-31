@@ -88,7 +88,14 @@
             </q-card>
           </div>
           <div class="row justify-center q-mt-md">
-            <q-btn flat no-caps label="Добавить" color="warning" text-color="primary" />
+            <q-btn
+              @click="modal = true"
+              flat
+              no-caps
+              label="Добавить"
+              color="warning"
+              text-color="primary"
+            />
           </div>
         </q-card-section>
       </q-card>
@@ -118,10 +125,38 @@
             </div>
           </div>
           <div class="row justify-center q-mt-md">
-            <q-btn flat no-caps label="Добавить" color="warning" text-color="primary" />
+            <q-btn
+              @click="modal = true"
+              flat
+              no-caps
+              label="Добавить"
+              color="warning"
+              text-color="primary"
+            />
           </div>
         </q-card-section>
       </q-card>
     </section>
+    <q-dialog v-model="modal">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const modal = ref<boolean>(false)
+</script>
