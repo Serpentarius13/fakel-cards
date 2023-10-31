@@ -82,7 +82,7 @@
                 <span class="text-dark caption bold-caption">3.2</span>
               </div>
             </div>
-            <q-card flat bordered class="bg-warning flex flex-center project">
+            <q-card flat style="border: 1px solid #D2DAE4" class="bg-secondary flex flex-center project">
               <span class="text-info">Проект 1</span>
             </q-card>
           </div>
