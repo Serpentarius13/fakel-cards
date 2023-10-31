@@ -1,9 +1,9 @@
 <template>
   <q-page class="bg-secondary container">
     <section>
-      <div class="row justify-between items-center">
+      <div class="row justify-between items-center q-mb-md">
         <p class="main-heading">Карточки</p>
-        <div class="row q-gutter-x-sm items-center">
+        <div class="row q-gutter-sm items-center">
           <div class="text-primary caption">
             <span>Проект:</span>
           </div>
@@ -33,7 +33,7 @@
         </div>
       </div>
     </section>
-    <section>
+    <section class="row justify-between q-gutter-y-md">
       <q-card flat class="bg-warning card">
         <q-card-section>
           <div class="row justify-between items-center q-mb-md">
