@@ -40,6 +40,10 @@ body {
     height: 120px;
     padding: 12px 12px;
     border-radius: 4px;
+
+    &.empty-section {
+      border: 1px dashed #BAC4D0;
+    }
   }
 
   .project {
