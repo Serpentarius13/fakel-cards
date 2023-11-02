@@ -15,19 +15,17 @@ interface Column {
 }
 
 interface Card {
-  id: number;
-  title: string;
-  stage: string;
-  project: boolean;
-  score: number;
+  id: number
+  project: boolean | string
+  score: number
+  stage: string
+  title: string
 }
 
 type Project = Column
 
-export interface panelDataFull {
-  columns: Column[] | []
-  cards: Card[] | []
-  projects: Project[] | []
+export interface panelData {
+  columns: Column[]
+  cards: Card[]
+  projects: Project[]
 }
-
-export type panelData = {} | panelDataFull

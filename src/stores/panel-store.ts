@@ -7,17 +7,15 @@ import PROJECTS from '../json/projects.json'
 import { panelData } from '../components/models'
 
 export const usePanelStore = defineStore('panel', () => {
-  let panelData: panelData = reactive({})
+  let panelData = reactive({} as panelData)
 
   async function getData () {
-    return await Promise.all([COLUMNS, CARDS, PROJECTS])
-      .then((res) => {
-        panelData = {
-          columns: res[0],
-          cards: res[1],
-          projects: res[2]
-        }
-      })
+    const response = await Promise.all([COLUMNS, CARDS, PROJECTS])
+    panelData = {
+      columns: response[0],
+      cards: response[1],
+      projects: response[2]
+    }
   }
 
   return { panelData, getData }
