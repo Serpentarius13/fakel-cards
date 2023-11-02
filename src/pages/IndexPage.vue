@@ -33,12 +33,12 @@
       </div>
     </section>
     <section class="row justify-start q-gutter-md">
-      <q-card flat class="bg-warning card">
+      <q-card v-for="(column, index) in panelStore.panelData.columns" :key="index" flat class="bg-warning card">
         <q-card-section>
           <div class="row justify-between items-center q-mb-md">
             <div class="card-heading">
               <span class="text-primary q-mr-xs">&bull;</span>
-              <span>Стадия 1</span>
+              <span>{{ column.name }}</span>
             </div>
             <div class="row q-gutter-x-xs">
               <img
@@ -96,43 +96,6 @@
               color="warning"
               text-color="primary"
             />
-        </q-card-actions>
-      </q-card>
-      <q-card flat class="bg-warning card">
-        <q-card-section>
-          <div class="row justify-between items-center q-mb-md">
-            <div class="card-heading">
-              <span class="text-primary q-mr-xs">&bull;</span>
-              <span>Стадия 4</span>
-            </div>
-            <div class="row q-gutter-x-xs">
-              <img
-                class="cursor-pointer"
-                src ="../assets/arrow_down_gray.svg"
-                alt="arrow down"
-              />
-              <img
-                class="cursor-pointer"
-                src ="../assets/arrow_up_gray.svg"
-                alt="arrow up"
-              />
-            </div>
-          </div>
-          <div class="bg-warning card-section empty-section flex flex-center">
-            <div class="text-primary">
-              <span>Список пуст</span>
-            </div>
-          </div>
-        </q-card-section>
-        <q-card-actions class="q-pt-none q-pb-md" align="center">
-          <q-btn
-            @click="modal = true"
-            flat
-            no-caps
-            label="Добавить"
-            color="warning"
-            text-color="primary"
-          />
         </q-card-actions>
       </q-card>
     </section>
@@ -198,6 +161,9 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
+import { usePanelStore } from '../stores/panel-store'
+
+const panelStore = usePanelStore()
 
 const modal = ref<boolean>(false)
 const text = ref<string>('')
