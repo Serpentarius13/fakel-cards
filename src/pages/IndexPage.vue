@@ -33,7 +33,7 @@
       </div>
     </section>
     <section class="row justify-start q-gutter-md">
-      <q-card v-for="(column, index) in panelStore.panelData.columns" :key="index" flat class="bg-warning card">
+      <q-card v-for="column in panelStore.panelData" :key="column.id" flat class="bg-warning card">
         <q-card-section>
           <div class="row justify-between items-center q-mb-md">
             <div class="card-heading">
@@ -53,38 +53,51 @@
               />
             </div>
           </div>
-          <div class="bg-white card-section column justify-between">
-            <div class="q-qutter-y-xs">
-              <div class="row justify-between">
-                <div class="row q-gutter-x-sm">
-                  <div class="card-heading">
-                    <span>Карточка 1</span>
+          <div v-if="column.cards?.length">
+            <div v-for="card in column.cards" :key="card.id">
+              <div class="bg-white card-section column justify-between q-mt-md">
+                <div class="q-qutter-y-xs">
+                  <div class="row justify-between">
+                    <div class="row q-gutter-x-sm">
+                      <div class="card-heading">
+                        <span>{{ card.title }}</span>
+                      </div>
+                      <img
+                        class="cursor-pointer"
+                        src ="../assets/edit.svg"
+                        alt="edit"
+                      />
+                      <img
+                        class="cursor-pointer"
+                        src ="../assets/delete.svg"
+                        alt="delete"
+                      />
+                    </div>
+                    <img
+                        class="cursor-pointer"
+                        src ="../assets/drag.svg"
+                        alt="drag"
+                      />
                   </div>
-                  <img
-                    class="cursor-pointer"
-                    src ="../assets/edit.svg"
-                    alt="edit"
-                  />
-                  <img
-                    class="cursor-pointer"
-                    src ="../assets/delete.svg"
-                    alt="delete"
-                  />
+                  <div class="text-primary">
+                    <span class="caption">Балл: </span>
+                    <span class="text-dark caption bold-caption">{{ card.score }}</span>
+                  </div>
                 </div>
-                <img
-                    class="cursor-pointer"
-                    src ="../assets/drag.svg"
-                    alt="drag"
-                  />
-              </div>
-              <div class="text-primary">
-                <span class="caption">Балл: </span>
-                <span class="text-dark caption bold-caption">3.2</span>
+                <div v-for="project in card.projects" :key="project.id">
+                  <q-card flat class="bg-secondary flex flex-center project">
+                    <span class="text-info">{{ project.name }}</span>
+                  </q-card>
+                </div>
               </div>
             </div>
-            <q-card flat class="bg-secondary flex flex-center project">
-              <span class="text-info">Проект 1</span>
-            </q-card>
+          </div>
+          <div v-else>
+            <div class="bg-warning card-section empty-section flex flex-center">
+              <div class="text-primary">
+                <span>Список пуст</span>
+              </div>
+            </div>
           </div>
         </q-card-section>
         <q-card-actions class="q-pt-none q-pb-md" align="center">
