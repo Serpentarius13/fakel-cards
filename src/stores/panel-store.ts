@@ -25,9 +25,6 @@ export const usePanelStore = defineStore('panel', () => {
         card.projects = apiData.projects.filter((item) => item.code === card.project)
       })
     })
-
-    console.log(apiData)
-    console.log(panelData)
   }
 
   return { apiData, panelData, getData }
