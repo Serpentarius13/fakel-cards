@@ -148,13 +148,13 @@
           </q-card-section>
           <q-card-actions class="q-pt-none q-pb-md" align="center">
             <q-btn
-                @click="modal = true"
-                flat
-                no-caps
-                label="Добавить"
-                color="warning"
-                text-color="primary"
-              />
+              @click="triggerModal(column.id)"
+              flat
+              no-caps
+              label="Добавить"
+              color="warning"
+              text-color="primary"
+            />
           </q-card-actions>
         </q-card>
       </div>
@@ -165,19 +165,19 @@
         />
       </div>
     </section>
-    <q-dialog v-model="modal">
+    <q-dialog v-model="modal.isOpen">
       <q-card flat class="modal-card">
         <div class="row justify-between">
           <div class="modal-card-heading">
             <p>Добавление</p>
-            <div class="text-primary caption">Стадия 1</div>
+            <div class="text-primary caption">Студия {{ modal.stage }}</div>
           </div>
           <div class="self-start q-mt-xs">
             <img
               class="cursor-pointer"
               src ="../assets/close.svg"
               alt="close"
-              @click="modal = false"
+              @click="modal.isOpen = false"
             />
           </div>
         </div>
@@ -213,7 +213,6 @@
         <q-card-actions align="center">
           <q-btn
             style="padding: 0 1rem"
-            @click="modal = true"
             no-caps
             label="Добавить"
             color="accent"
@@ -226,15 +225,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { usePanelStore } from '../stores/panel-store'
 
 const panelStore = usePanelStore()
 
-const modal = ref<boolean>(false)
-const text = ref<string>('')
 const selectFilter = ref<string>('Не выбрано')
+const modal = reactive({ isOpen: false, stage: 0 })
+const text = ref<string>('')
 const selectModal = ref<string>('Не выбрано')
+
+function triggerModal (stage: number) {
+  modal.isOpen = true
+  modal.stage = stage
+}
 
 function activateFilter (index: number) {
   const lSPanelData = JSON.parse(localStorage.getItem('panelData') || '{}')
