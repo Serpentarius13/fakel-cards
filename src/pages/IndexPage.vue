@@ -70,11 +70,29 @@
               </div>
               <div class="row q-gutter-x-xs">
                 <img
+                  v-if="!column.sortedDown"
+                  @click="column.sortedDown = true"
                   class="cursor-pointer"
                   src ="../assets/arrow_down_gray.svg"
                   alt="arrow down"
                 />
                 <img
+                  v-else
+                  @click="column.sortedDown = false"
+                  class="cursor-pointer"
+                  src ="../assets/arrow_down_blue.svg"
+                  alt="arrow down"
+                />
+                <img
+                  v-if="!column.sortedUp"
+                  @click="column.sortedUp = true"
+                  class="cursor-pointer"
+                  src ="../assets/arrow_up_gray.svg"
+                  alt="arrow up"
+                />
+                <img
+                  v-else
+                  @click="column.sortedUp = false"
                   class="cursor-pointer"
                   src ="../assets/arrow_up_gray.svg"
                   alt="arrow up"

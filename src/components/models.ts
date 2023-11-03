@@ -29,6 +29,8 @@ interface panelDataCard extends Card {
 }
 
 export interface panelDataColumn extends Column {
+  sortedDown?: boolean
+  sortedUp?: boolean
   cards?: panelDataCard[]
 }
 

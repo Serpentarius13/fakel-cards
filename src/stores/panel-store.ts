@@ -7,7 +7,6 @@ import PROJECTS from '../json/projects.json'
 
 export const usePanelStore = defineStore('panel', () => {
   const panelData = reactive([] as panelData)
-
   const isLoading = ref<boolean>(false)
 
   function getData () {
@@ -20,6 +19,8 @@ export const usePanelStore = defineStore('panel', () => {
             res[0].forEach((item) => panelData.push(item))
 
             panelData.forEach((column, index) => {
+              column.sortedDown = false
+              column.sortedUp = false
               column.cards = res[1].filter((item) => item.stage === `stage-${index + 1}`)
 
               column.cards.forEach((card) => {
@@ -36,5 +37,10 @@ export const usePanelStore = defineStore('panel', () => {
       JSON.parse(localStorage.getItem('panelData')!).forEach((item: panelDataColumn) => panelData.push(item))
     }
   }
-  return { panelData, isLoading, getData }
+
+  function sortDescending () {
+    console.log(panelData)
+  }
+
+  return { panelData, isLoading, getData, sortDescending }
 })
