@@ -34,12 +34,12 @@ export const usePanelStore = defineStore('panel', () => {
           })
       }, 2000)
     } else {
-      JSON.parse(localStorage.getItem('panelData')!).forEach((item: panelDataColumn) => panelData.push(item))
+      JSON.parse(localStorage.getItem('panelData') || '{}').forEach((item: panelDataColumn) => panelData.push(item))
     }
   }
 
-  function sortDescending () {
-    console.log(panelData)
+  function sortDescending (item: panelDataColumn) {
+    item.sortedDown = true
   }
 
   return { panelData, isLoading, getData, sortDescending }

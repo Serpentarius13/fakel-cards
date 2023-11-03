@@ -71,7 +71,7 @@
               <div class="row q-gutter-x-xs">
                 <img
                   v-if="!column.sortedDown"
-                  @click="column.sortedDown = true"
+                  @click="panelStore.sortDescending(column)"
                   class="cursor-pointer"
                   src="../assets/arrow_down_gray.svg"
                   alt="arrow down"
