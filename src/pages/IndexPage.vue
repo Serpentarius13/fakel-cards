@@ -13,7 +13,7 @@
             dense
             outlined
             bg-color="warning"
-            v-model="select"
+            v-model="selectFilter"
             :options="panelStore.projects"
           >
             <template v-slot:loading>
@@ -196,7 +196,7 @@
             dense
             outlined
             bg-color="positive"
-            v-model="select"
+            v-model="selectModal"
             :options="panelStore.projects"
           />
         </div>
@@ -233,21 +233,22 @@ const panelStore = usePanelStore()
 
 const modal = ref<boolean>(false)
 const text = ref<string>('')
-const select = ref<string>('Не выбрано')
+const selectFilter = ref<string>('Не выбрано')
+const selectModal = ref<string>('Не выбрано')
 
 function activateFilter (index: number) {
   const lSPanelData = JSON.parse(localStorage.getItem('panelData') || '{}')
-  if (select.value === `Проект ${index}`) {
+  if (selectFilter.value === `Проект ${index}`) {
     panelStore.panelData = lSPanelData
     panelStore.panelData.forEach((column) => {
       column.cards = column.cards?.filter((card) => card.project === `project-${index}`)
     })
-  } else if (select.value === 'Не выбрано') {
+  } else if (selectFilter.value === 'Не выбрано') {
     panelStore.panelData = lSPanelData
   }
 }
 
-watch(() => select.value, () => {
+watch(() => selectFilter.value, () => {
   panelStore.projects
     .filter((option) => option !== 'Не выбрано')
     .forEach((option, index) => activateFilter(++index))
