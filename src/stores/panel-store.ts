@@ -9,7 +9,7 @@ export const usePanelStore = defineStore('panel', () => {
   const panelData = reactive([] as PanelData)
   const isLoading = ref<boolean>(false)
   const cardsOriginal = reactive([[], [], [], []] as PanelDataCard[][])
-  const projects = reactive(['Не выбрано'] as string[])
+  const projects = reactive([] as string[])
 
   function getData () {
     if (!localStorage.getItem('panelData')) {
@@ -28,16 +28,20 @@ export const usePanelStore = defineStore('panel', () => {
                 card.projects = res[2].filter((project: Project) => project.code === card.project)
               })
             })
-
-            res[2].forEach((project: Project) => projects.push(project.name))
-
             localStorage.setItem('panelData', JSON.stringify(panelData))
+
+            res[2].forEach((project: Project) => {
+              projects[0] = 'Не выбрано'
+              projects.push(project.name)
+            })
+            localStorage.setItem('projects', JSON.stringify(projects))
 
             isLoading.value = false
           })
       }, 2000)
     } else {
       JSON.parse(localStorage.getItem('panelData') || '{}').forEach((item: PanelDataColumn) => panelData.push(item))
+      JSON.parse(localStorage.getItem('projects') || '{}').forEach((item: string) => projects.push(item))
     }
   }
 
