@@ -19,7 +19,7 @@
             <template v-slot:loading>
               <q-spinner
                 color="info"
-                size="1em"
+                size="0.8em"
               />
             </template>
           </q-select>

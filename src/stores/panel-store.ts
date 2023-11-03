@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import { panelData, panelDataColumn, panelDataCard, Column, Project, Card, Response } from '../components/models'
+import { PanelData, PanelDataColumn, PanelDataCard, Column, Project, Card, Response } from '../components/models'
 import COLUMNS from '../json/columns.json'
 import CARDS from '../json/cards.json'
 import PROJECTS from '../json/projects.json'
 
 export const usePanelStore = defineStore('panel', () => {
-  const panelData = reactive([] as panelData)
+  const panelData = reactive([] as PanelData)
   const isLoading = ref<boolean>(false)
-  const cardsOriginal = reactive([[], [], [], []] as unknown as [panelDataCard[]])
+  const cardsOriginal = reactive([[], [], [], []] as PanelDataCard[][])
   const projects = reactive(['Не выбрано'] as string[])
 
   function getData () {
@@ -19,12 +19,12 @@ export const usePanelStore = defineStore('panel', () => {
         return await Promise.all([COLUMNS, CARDS, PROJECTS])
           .then((res: Response) => {
             res[0].forEach((column: Column) => panelData.push(column))
-            panelData.forEach((column: panelDataColumn, index: number) => {
+            panelData.forEach((column: PanelDataColumn, index: number) => {
               column.sortedDown = false
               column.sortedUp = false
               column.cards = res[1].filter((card: Card) => card.stage === `stage-${index + 1}`)
 
-              column.cards.forEach((card: panelDataCard) => {
+              column.cards.forEach((card: PanelDataCard) => {
                 card.projects = res[2].filter((project: Project) => project.code === card.project)
               })
             })
@@ -37,11 +37,11 @@ export const usePanelStore = defineStore('panel', () => {
           })
       }, 2000)
     } else {
-      JSON.parse(localStorage.getItem('panelData') || '{}').forEach((item: panelDataColumn) => panelData.push(item))
+      JSON.parse(localStorage.getItem('panelData') || '{}').forEach((item: PanelDataColumn) => panelData.push(item))
     }
   }
 
-  function sortDescendingTrue (item: panelData, index: number) {
+  function sortDescendingTrue (item: PanelData, index: number) {
     if (cardsOriginal[index].length) {
       item[index].cards!.length = 0
       cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
@@ -53,14 +53,14 @@ export const usePanelStore = defineStore('panel', () => {
     item[index].sortedDown = true
   }
 
-  function sortDescendingFalse (item: panelData, index: number) {
+  function sortDescendingFalse (item: PanelData, index: number) {
     item[index].cards!.length = 0
     cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
     cardsOriginal[index].length = 0
     item[index].sortedDown = false
   }
 
-  function sortAscendingTrue (item: panelData, index: number) {
+  function sortAscendingTrue (item: PanelData, index: number) {
     if (cardsOriginal[index].length) {
       item[index].cards!.length = 0
       cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
@@ -72,7 +72,7 @@ export const usePanelStore = defineStore('panel', () => {
     item[index].sortedUp = true
   }
 
-  function sortAscendingFalse (item: panelData, index: number) {
+  function sortAscendingFalse (item: PanelData, index: number) {
     item[index].cards!.length = 0
     cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
     cardsOriginal[index].length = 0
