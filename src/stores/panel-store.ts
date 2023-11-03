@@ -45,6 +45,13 @@ export const usePanelStore = defineStore('panel', () => {
     }
   }
 
+  function activateFilter () {
+    panelData.forEach((column) => {
+      column.cards = column.cards?.filter((card) => card.project === 'project-1')
+    })
+    console.log(panelData)
+  }
+
   function sortDescendingTrue (item: PanelData, index: number) {
     if (cardsOriginal[index].length) {
       item[index].cards!.length = 0
@@ -88,6 +95,7 @@ export const usePanelStore = defineStore('panel', () => {
     isLoading,
     projects,
     getData,
+    activateFilter,
     sortDescendingTrue,
     sortDescendingFalse,
     sortAscendingTrue,

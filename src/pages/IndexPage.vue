@@ -226,7 +226,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
+import { PanelData } from '../components/models'
 import { usePanelStore } from '../stores/panel-store'
 
 const panelStore = usePanelStore()
@@ -234,4 +235,40 @@ const panelStore = usePanelStore()
 const modal = ref<boolean>(false)
 const text = ref<string>('')
 const select = ref<string>('Не выбрано')
+
+const arrTest = reactive([] as PanelData)
+
+panelStore.panelData.forEach((column) => {
+  arrTest.push(column)
+})
+
+watch(() => select.value, () => {
+  if (select.value === 'Не выбрано') {
+    panelStore.panelData = Object.assign([], JSON.parse(localStorage.getItem('panelData') || '{}'))
+  }
+  if (select.value === 'Проект 1') {
+    panelStore.panelData = Object.assign([], JSON.parse(localStorage.getItem('panelData') || '{}'))
+    panelStore.panelData.forEach((column) => {
+      column.cards = column.cards?.filter((card) => card.project === 'project-1')
+    })
+  }
+  if (select.value === 'Проект 2') {
+    panelStore.panelData = Object.assign([], JSON.parse(localStorage.getItem('panelData') || '{}'))
+    panelStore.panelData.forEach((column) => {
+      column.cards = column.cards?.filter((card) => card.project === 'project-2')
+    })
+  }
+  if (select.value === 'Проект 3') {
+    panelStore.panelData = Object.assign([], JSON.parse(localStorage.getItem('panelData') || '{}'))
+    panelStore.panelData.forEach((column) => {
+      column.cards = column.cards?.filter((card) => card.project === 'project-3')
+    })
+  }
+  if (select.value === 'Проект 4') {
+    panelStore.panelData = Object.assign([], JSON.parse(localStorage.getItem('panelData') || '{}'))
+    panelStore.panelData.forEach((column) => {
+      column.cards = column.cards?.filter((card) => card.project === 'project-4')
+    })
+  }
+})
 </script>
