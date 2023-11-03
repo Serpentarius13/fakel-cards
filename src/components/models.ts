@@ -28,7 +28,7 @@ interface panelDataCard extends Card {
   projects?: Project[]
 }
 
-interface panelDataColumn extends Column {
+export interface panelDataColumn extends Column {
   cards?: panelDataCard[]
 }
 

@@ -8,6 +8,5 @@ import { usePanelStore } from './stores/panel-store'
 
 const panelStore = usePanelStore()
 
-// onMounted(() => setTimeout(async () => await panelStore.getData(), 2000))
-onMounted(async () => await panelStore.getData())
+onMounted(() => panelStore.getData())
 </script>

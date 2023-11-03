@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import { panelData } from '../components/models'
+import { panelData, panelDataColumn } from '../components/models'
 import COLUMNS from '../json/columns.json'
 import CARDS from '../json/cards.json'
 import PROJECTS from '../json/projects.json'
@@ -11,7 +11,7 @@ export const usePanelStore = defineStore('panel', () => {
   const isLoading = ref<boolean>(false)
 
   function getData () {
-    if (!panelData.length) {
+    if (!localStorage.getItem('panelData')) {
       isLoading.value = true
 
       setTimeout(async () => {
@@ -27,11 +27,14 @@ export const usePanelStore = defineStore('panel', () => {
               })
             })
 
+            localStorage.setItem('panelData', JSON.stringify(panelData))
+
             isLoading.value = false
           })
       }, 2000)
+    } else {
+      JSON.parse(localStorage.getItem('panelData')!).forEach((item: panelDataColumn) => panelData.push(item))
     }
   }
-
   return { panelData, isLoading, getData }
 })
