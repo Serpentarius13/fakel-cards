@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import { PanelData, PanelDataColumn, PanelDataCard, Column, Project, Card, Response } from '../components/models'
+import { PanelData, PanelDataColumn, Column, Card, Project, Response } from '../components/models'
 import COLUMNS from '../json/columns.json'
 import CARDS from '../json/cards.json'
 import PROJECTS from '../json/projects.json'
@@ -8,7 +8,7 @@ import PROJECTS from '../json/projects.json'
 export const usePanelStore = defineStore('panel', () => {
   const panelData = reactive([] as PanelData)
   const isLoading = ref<boolean>(false)
-  const cardsOriginal = reactive([[], [], [], []] as PanelDataCard[][])
+  const cardsOriginal = reactive([[], [], [], []] as Card[][])
   const projects = reactive([] as string[])
 
   function getData () {
@@ -24,8 +24,10 @@ export const usePanelStore = defineStore('panel', () => {
               column.sortedUp = false
               column.cards = res[1].filter((card: Card) => card.stage === `stage-${index + 1}`)
 
-              column.cards.forEach((card: PanelDataCard) => {
-                card.projects = res[2].filter((project: Project) => project.code === card.project)
+              column.cards.forEach((card: Card) => {
+                if (typeof card.project === 'string') {
+                  card.project = card.project.replace('project', 'Проект')
+                }
               })
             })
             localStorage.setItem('panelData', JSON.stringify(panelData))
@@ -54,33 +56,33 @@ export const usePanelStore = defineStore('panel', () => {
     cardsOriginal[index].length = 0
   }
 
-  const descendOrder = (a: PanelDataCard, b: PanelDataCard) => b.score - a.score
-  const ascendOrder = (a: PanelDataCard, b: PanelDataCard) => a.score - b.score
+  const descendOrder = (a: Card, b: Card) => b.score - a.score
+  const ascendOrder = (a: Card, b: Card) => a.score - b.score
 
-  function sortTrue (item: PanelData, index: number, prop: string, callback: (a: PanelDataCard, b: PanelDataCard) => number) {
+  function sortTrue (arr: PanelData, index: number, prop: string, callback: (a: Card, b: Card) => number) {
     if (cardsOriginal[index].length) {
-      emptyCardsOriginal(item, index)
+      emptyCardsOriginal(arr, index)
     }
 
-    item[index].cards?.forEach((card) => cardsOriginal[index].push(card))
-    item[index].cards?.sort((a, b) => callback(a, b))
+    arr[index].cards?.forEach((card) => cardsOriginal[index].push(card))
+    arr[index].cards?.sort((a, b) => callback(a, b))
 
     if (prop === 'sortedDown') {
-      item[index].sortedUp = false
-      item[index].sortedDown = true
+      arr[index].sortedUp = false
+      arr[index].sortedDown = true
     } else if (prop === 'sortedUp') {
-      item[index].sortedDown = false
-      item[index].sortedUp = true
+      arr[index].sortedDown = false
+      arr[index].sortedUp = true
     }
   }
 
-  function sortFalse (item: PanelData, index: number, prop: string) {
-    emptyCardsOriginal(item, index)
+  function sortFalse (arr: PanelData, index: number, prop: string) {
+    emptyCardsOriginal(arr, index)
 
     if (prop === 'sortedDown') {
-      item[index].sortedDown = false
+      arr[index].sortedDown = false
     } else if (prop === 'sortedUp') {
-      item[index].sortedUp = false
+      arr[index].sortedUp = false
     }
   }
 

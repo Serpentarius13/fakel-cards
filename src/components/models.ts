@@ -26,14 +26,10 @@ export type Project = Column
 
 export type Response = [Column[], Card[], Project[]]
 
-export interface PanelDataCard extends Card {
-  projects?: Project[]
-}
-
 export interface PanelDataColumn extends Column {
   sortedDown?: boolean
   sortedUp?: boolean
-  cards?: PanelDataCard[]
+  cards?: Card[]
 }
 
 export type PanelData = PanelDataColumn[]

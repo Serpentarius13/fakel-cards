@@ -130,11 +130,9 @@
                       <span class="text-dark caption bold-caption">{{ card.score }}</span>
                     </div>
                   </div>
-                  <div v-for="project in card.projects" :key="project.id">
-                    <q-card flat class="bg-secondary flex flex-center project">
-                      <span class="text-info">{{ project.name }}</span>
-                    </q-card>
-                  </div>
+                  <q-card v-if="card.project" flat class="bg-secondary flex flex-center project">
+                    <span class="text-info">{{ card.project }}</span>
+                  </q-card>
                 </div>
               </div>
             </div>
@@ -235,6 +233,17 @@ const modal = reactive({ isOpen: false, stage: 0 })
 const text = ref<string>('')
 const selectModal = ref<string>('Не выбрано')
 
+// function addCard (index: number) {
+//   const cards = panelStore.panelData[index].cards
+//   cards!.push({
+//     id: ++cards!.length,
+//     project: false,
+//     score: 0,
+//     stage: `stage-${index}`,
+//     title: 'test'
+//   })
+// }
+
 function triggerModal (stage: number) {
   modal.isOpen = true
   modal.stage = stage
@@ -245,7 +254,7 @@ function activateFilter (index: number) {
   if (selectFilter.value === `Проект ${index}`) {
     panelStore.panelData = lSPanelData
     panelStore.panelData.forEach((column) => {
-      column.cards = column.cards?.filter((card) => card.project === `project-${index}`)
+      column.cards = column.cards?.filter((card) => card.project === `Проект-${index}`)
     })
   } else if (selectFilter.value === 'Не выбрано') {
     panelStore.panelData = lSPanelData
