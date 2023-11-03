@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import { panelData, panelDataColumn, panelDataCard, Project } from '../components/models'
+import { panelData, panelDataColumn, panelDataCard, Column, Project, Card, Response } from '../components/models'
 import COLUMNS from '../json/columns.json'
 import CARDS from '../json/cards.json'
 import PROJECTS from '../json/projects.json'
@@ -17,19 +17,20 @@ export const usePanelStore = defineStore('panel', () => {
 
       setTimeout(async () => {
         return await Promise.all([COLUMNS, CARDS, PROJECTS])
-          .then((res) => {
-            res[0].forEach((column) => panelData.push(column))
-            panelData.forEach((column, index) => {
+          .then((res: Response) => {
+            console.log(res)
+            res[0].forEach((column: Column) => panelData.push(column))
+            panelData.forEach((column: panelDataColumn, index: number) => {
               column.sortedDown = false
               column.sortedUp = false
-              column.cards = res[1].filter((card) => card.stage === `stage-${index + 1}`)
+              column.cards = res[1].filter((card: Card) => card.stage === `stage-${index + 1}`)
 
-              column.cards.forEach((card) => {
-                card.projects = res[2].filter((project) => project.code === card.project)
+              column.cards.forEach((card: panelDataCard) => {
+                card.projects = res[2].filter((project: Project) => project.code === card.project)
               })
             })
 
-            res[2].forEach((project) => projects.push(project.name))
+            res[2].forEach((project: Project) => projects.push(project.name))
 
             localStorage.setItem('panelData', JSON.stringify(panelData))
 

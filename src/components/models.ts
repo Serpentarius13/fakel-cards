@@ -7,14 +7,14 @@ export interface Meta {
   totalCount: number;
 }
 
-interface Column {
+export interface Column {
   id: number;
   sort: number;
   name: string;
   code: string;
 }
 
-interface Card {
+export interface Card {
   id: number
   project: boolean | string
   score: number
@@ -23,6 +23,8 @@ interface Card {
 }
 
 export type Project = Column
+
+export type Response = [Column[], Card[], Project[]]
 
 export interface panelDataCard extends Card {
   projects?: Project[]
