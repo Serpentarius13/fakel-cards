@@ -226,7 +226,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { usePanelStore } from '../stores/panel-store'
 
 const panelStore = usePanelStore()

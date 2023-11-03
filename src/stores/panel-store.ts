@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { PanelData, PanelDataColumn, PanelDataCard, Column, Project, Card, Response } from '../components/models'
 import COLUMNS from '../json/columns.json'
 import CARDS from '../json/cards.json'
 import PROJECTS from '../json/projects.json'
 
 export const usePanelStore = defineStore('panel', () => {
-  const panelData = reactive([] as PanelData)
+  const panelData = computed(() => reactive([]) as PanelData)
   const isLoading = ref<boolean>(false)
   const cardsOriginal = reactive([[], [], [], []] as PanelDataCard[][])
   const projects = reactive([] as string[])
@@ -18,8 +18,8 @@ export const usePanelStore = defineStore('panel', () => {
       setTimeout(async () => {
         return await Promise.all([COLUMNS, CARDS, PROJECTS])
           .then((res: Response) => {
-            res[0].forEach((column: Column) => panelData.push(column))
-            panelData.forEach((column: PanelDataColumn, index: number) => {
+            res[0].forEach((column: Column) => panelData.value.push(column))
+            panelData.value.forEach((column: PanelDataColumn, index: number) => {
               column.sortedDown = false
               column.sortedUp = false
               column.cards = res[1].filter((card: Card) => card.stage === `stage-${index + 1}`)
@@ -28,7 +28,7 @@ export const usePanelStore = defineStore('panel', () => {
                 card.projects = res[2].filter((project: Project) => project.code === card.project)
               })
             })
-            localStorage.setItem('panelData', JSON.stringify(panelData))
+            localStorage.setItem('panelData', JSON.stringify(panelData.value))
 
             res[2].forEach((project: Project) => {
               projects[0] = 'Не выбрано'
@@ -40,7 +40,7 @@ export const usePanelStore = defineStore('panel', () => {
           })
       }, 2000)
     } else {
-      JSON.parse(localStorage.getItem('panelData') || '{}').forEach((item: PanelDataColumn) => panelData.push(item))
+      JSON.parse(localStorage.getItem('panelData') || '{}').forEach((item: PanelDataColumn) => panelData.value.push(item))
       JSON.parse(localStorage.getItem('projects') || '{}').forEach((item: string) => projects.push(item))
     }
   }
