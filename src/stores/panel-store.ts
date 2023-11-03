@@ -1,31 +1,27 @@
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
-import { apiData, panelData } from '../components/models'
+import { panelData } from '../components/models'
 import COLUMNS from '../json/columns.json'
 import CARDS from '../json/cards.json'
 import PROJECTS from '../json/projects.json'
 
 export const usePanelStore = defineStore('panel', () => {
-  const apiData = reactive({} as apiData)
-
   const panelData = reactive([] as panelData)
 
   async function getData () {
-    const response = await Promise.all([COLUMNS, CARDS, PROJECTS])
+    return await Promise.all([COLUMNS, CARDS, PROJECTS])
+      .then((res) => {
+        res[0].forEach((item) => panelData.push(item))
 
-    apiData.columns = response[0]
-    apiData.cards = response[1]
-    apiData.projects = response[2]
+        panelData.forEach((column, index) => {
+          column.cards = res[1].filter((item) => item.stage === `stage-${index + 1}`)
 
-    apiData.columns.forEach((item) => panelData.push(item))
-
-    panelData.forEach((column, index) => {
-      column.cards = apiData.cards.filter((item) => item.stage === `stage-${index + 1}`)
-      column.cards.forEach((card) => {
-        card.projects = apiData.projects.filter((item) => item.code === card.project)
+          column.cards.forEach((card) => {
+            card.projects = res[2].filter((item) => item.code === card.project)
+          })
+        })
       })
-    })
   }
 
-  return { apiData, panelData, getData }
+  return { panelData, getData }
 })
