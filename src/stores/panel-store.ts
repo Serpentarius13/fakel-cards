@@ -40,16 +40,12 @@ export const usePanelStore = defineStore('panel', () => {
           })
       }, 2000)
     } else {
-      JSON.parse(localStorage.getItem('panelData') || '{}').forEach((item: PanelDataColumn) => panelData.push(item))
-      JSON.parse(localStorage.getItem('projects') || '{}').forEach((item: string) => projects.push(item))
-    }
-  }
+      const lSPanelData = JSON.parse(localStorage.getItem('panelData') || '{}')
+      const lSProjects = JSON.parse(localStorage.getItem('projects') || '{}')
 
-  function activateFilter () {
-    panelData.forEach((column) => {
-      column.cards = column.cards?.filter((card) => card.project === 'project-1')
-    })
-    console.log(panelData)
+      lSPanelData.forEach((item: PanelDataColumn) => panelData.push(item))
+      lSProjects.forEach((item: string) => projects.push(item))
+    }
   }
 
   function sortDescendingTrue (item: PanelData, index: number) {
@@ -95,7 +91,6 @@ export const usePanelStore = defineStore('panel', () => {
     isLoading,
     projects,
     getData,
-    activateFilter,
     sortDescendingTrue,
     sortDescendingFalse,
     sortAscendingTrue,

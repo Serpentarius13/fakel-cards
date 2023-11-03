@@ -226,8 +226,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue'
-import { PanelData } from '../components/models'
+import { ref, watch } from 'vue'
 import { usePanelStore } from '../stores/panel-store'
 
 const panelStore = usePanelStore()
@@ -236,39 +235,21 @@ const modal = ref<boolean>(false)
 const text = ref<string>('')
 const select = ref<string>('Не выбрано')
 
-const arrTest = reactive([] as PanelData)
-
-panelStore.panelData.forEach((column) => {
-  arrTest.push(column)
-})
+function activateFilter (index: number) {
+  const lSPanelData = JSON.parse(localStorage.getItem('panelData') || '{}')
+  if (select.value === `Проект ${index}`) {
+    panelStore.panelData = lSPanelData
+    panelStore.panelData.forEach((column) => {
+      column.cards = column.cards?.filter((card) => card.project === `project-${index}`)
+    })
+  } else if (select.value === 'Не выбрано') {
+    panelStore.panelData = lSPanelData
+  }
+}
 
 watch(() => select.value, () => {
-  if (select.value === 'Не выбрано') {
-    panelStore.panelData = Object.assign([], JSON.parse(localStorage.getItem('panelData') || '{}'))
-  }
-  if (select.value === 'Проект 1') {
-    panelStore.panelData = Object.assign([], JSON.parse(localStorage.getItem('panelData') || '{}'))
-    panelStore.panelData.forEach((column) => {
-      column.cards = column.cards?.filter((card) => card.project === 'project-1')
-    })
-  }
-  if (select.value === 'Проект 2') {
-    panelStore.panelData = Object.assign([], JSON.parse(localStorage.getItem('panelData') || '{}'))
-    panelStore.panelData.forEach((column) => {
-      column.cards = column.cards?.filter((card) => card.project === 'project-2')
-    })
-  }
-  if (select.value === 'Проект 3') {
-    panelStore.panelData = Object.assign([], JSON.parse(localStorage.getItem('panelData') || '{}'))
-    panelStore.panelData.forEach((column) => {
-      column.cards = column.cards?.filter((card) => card.project === 'project-3')
-    })
-  }
-  if (select.value === 'Проект 4') {
-    panelStore.panelData = Object.assign([], JSON.parse(localStorage.getItem('panelData') || '{}'))
-    panelStore.panelData.forEach((column) => {
-      column.cards = column.cards?.filter((card) => card.project === 'project-4')
-    })
-  }
+  panelStore.projects
+    .filter((option) => option !== 'Не выбрано')
+    .forEach((option, index) => activateFilter(++index))
 })
 </script>
