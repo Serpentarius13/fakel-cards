@@ -71,7 +71,7 @@
               <div class="row q-gutter-x-xs">
                 <img
                   v-if="!column.sortedDown"
-                  @click="panelStore.sortDescendingTrue(panelStore.panelData, index)"
+                  @click="panelStore.sortTrue(panelStore.panelData, index, 'sortedDown', panelStore.descendOrder)"
                   class="cursor-pointer"
                   src="../assets/arrow_down_gray.svg"
                   alt="arrow down"
@@ -85,7 +85,7 @@
                 />
                 <img
                   v-if="!column.sortedUp"
-                  @click="panelStore.sortAscendingTrue(panelStore.panelData, index)"
+                  @click="panelStore.sortTrue(panelStore.panelData, index, 'sortedUp', panelStore.ascendOrder)"
                   class="cursor-pointer"
                   src="../assets/arrow_up_gray.svg"
                   alt="arrow up"

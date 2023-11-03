@@ -48,41 +48,37 @@ export const usePanelStore = defineStore('panel', () => {
     }
   }
 
-  function sortDescendingTrue (item: PanelData, index: number) {
+  function emptyCardsOriginal (item: PanelData, index: number) {
+    item[index].cards!.length = 0
+    cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
+    cardsOriginal[index].length = 0
+  }
+
+  const descendOrder = (a: PanelDataCard, b: PanelDataCard) => b.score - a.score
+  const ascendOrder = (a: PanelDataCard, b: PanelDataCard) => a.score - b.score
+
+  function sortTrue (item: PanelData, index: number, prop: string, callback: (a: PanelDataCard, b: PanelDataCard) => number) {
     if (cardsOriginal[index].length) {
-      item[index].cards!.length = 0
-      cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
-      cardsOriginal[index].length = 0
+      emptyCardsOriginal(item, index)
     }
     item[index].cards?.forEach((card) => cardsOriginal[index].push(card))
-    item[index].cards?.sort((a, b) => b.score - a.score)
-    item[index].sortedUp = false
-    item[index].sortedDown = true
+    item[index].cards?.sort((a, b) => callback(a, b))
+    if (prop === 'sortedDown') {
+      item[index].sortedUp = false
+      item[index].sortedDown = true
+    } else if (prop === 'sortedUp') {
+      item[index].sortedDown = false
+      item[index].sortedUp = true
+    }
   }
 
   function sortDescendingFalse (item: PanelData, index: number) {
-    item[index].cards!.length = 0
-    cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
-    cardsOriginal[index].length = 0
+    emptyCardsOriginal(item, index)
     item[index].sortedDown = false
-  }
-
-  function sortAscendingTrue (item: PanelData, index: number) {
-    if (cardsOriginal[index].length) {
-      item[index].cards!.length = 0
-      cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
-      cardsOriginal[index].length = 0
-    }
-    item[index].cards?.forEach((card) => cardsOriginal[index].push(card))
-    item[index].cards?.sort((a, b) => a.score - b.score)
-    item[index].sortedDown = false
-    item[index].sortedUp = true
   }
 
   function sortAscendingFalse (item: PanelData, index: number) {
-    item[index].cards!.length = 0
-    cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
-    cardsOriginal[index].length = 0
+    emptyCardsOriginal(item, index)
     item[index].sortedUp = false
   }
 
@@ -91,9 +87,10 @@ export const usePanelStore = defineStore('panel', () => {
     isLoading,
     projects,
     getData,
-    sortDescendingTrue,
+    descendOrder,
+    ascendOrder,
+    sortTrue,
     sortDescendingFalse,
-    sortAscendingTrue,
     sortAscendingFalse
   }
 })
