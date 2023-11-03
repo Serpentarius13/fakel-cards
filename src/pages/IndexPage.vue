@@ -8,109 +8,144 @@
             <span>Проект:</span>
           </div>
           <q-select
+            :loading="panelStore.isLoading"
+            :disable="panelStore.isLoading"
             dense
             outlined
             bg-color="warning"
             v-model="select"
             :options="options"
-          />
+          >
+            <template v-slot:loading>
+              <q-spinner
+                color="info"
+                size="1em"
+              />
+            </template>
+          </q-select>
           <q-btn
+            :loading="panelStore.isLoading"
+            :disable="panelStore.isLoading"
             to="/add"
             no-caps
             class="q-px-lg"
             color="accent"
             unelevated
             label="Добавить карточку"
-          />
+          >
+            <template v-slot:loading>
+              <q-spinner
+                color="white"
+                size="1em"
+              />
+            </template>
+          </q-btn>
           <q-btn
+            :loading="panelStore.isLoading"
+            :disable="panelStore.isLoading"
             no-caps
             class="q-px-lg"
             color="accent"
             unelevated
             label="Сохранить изменения"
-          />
+          >
+            <template v-slot:loading>
+              <q-spinner
+                color="white"
+                size="1em"
+              />
+            </template>
+          </q-btn>
         </div>
       </div>
     </section>
-    <section class="row justify-start q-gutter-md">
-      <q-card v-for="column in panelStore.panelData" :key="column.id" flat class="bg-warning card">
-        <q-card-section>
-          <div class="row justify-between items-center q-mb-md">
-            <div class="card-heading">
-              <span class="text-primary q-mr-xs">&bull;</span>
-              <span>{{ column.name }}</span>
+    <section>
+      <div class="row q-gutter-md" v-if="!panelStore.isLoading">
+        <q-card v-for="column in panelStore.panelData" :key="column.id" flat class="bg-warning card">
+          <q-card-section>
+            <div class="row justify-between items-center q-mb-md">
+              <div class="card-heading">
+                <span class="text-primary q-mr-xs">&bull;</span>
+                <span>{{ column.name }}</span>
+              </div>
+              <div class="row q-gutter-x-xs">
+                <img
+                  class="cursor-pointer"
+                  src ="../assets/arrow_down_gray.svg"
+                  alt="arrow down"
+                />
+                <img
+                  class="cursor-pointer"
+                  src ="../assets/arrow_up_gray.svg"
+                  alt="arrow up"
+                />
+              </div>
             </div>
-            <div class="row q-gutter-x-xs">
-              <img
-                class="cursor-pointer"
-                src ="../assets/arrow_down_gray.svg"
-                alt="arrow down"
-              />
-              <img
-                class="cursor-pointer"
-                src ="../assets/arrow_up_gray.svg"
-                alt="arrow up"
-              />
-            </div>
-          </div>
-          <div v-if="column.cards?.length">
-            <div v-for="card in column.cards" :key="card.id">
-              <div class="bg-white card-section column justify-between q-mt-md">
-                <div class="q-qutter-y-xs">
-                  <div class="row justify-between">
-                    <div class="row q-gutter-x-sm">
-                      <div class="card-heading">
-                        <span>{{ card.title }}</span>
+            <div v-if="column.cards?.length">
+              <div v-for="card in column.cards" :key="card.id">
+                <div class="bg-white card-section column justify-between q-mt-md">
+                  <div class="q-qutter-y-xs">
+                    <div class="row justify-between">
+                      <div class="row q-gutter-x-sm">
+                        <div class="card-heading">
+                          <span>{{ card.title }}</span>
+                        </div>
+                        <img
+                          class="cursor-pointer"
+                          src ="../assets/edit.svg"
+                          alt="edit"
+                        />
+                        <img
+                          class="cursor-pointer"
+                          src ="../assets/delete.svg"
+                          alt="delete"
+                        />
                       </div>
                       <img
-                        class="cursor-pointer"
-                        src ="../assets/edit.svg"
-                        alt="edit"
-                      />
-                      <img
-                        class="cursor-pointer"
-                        src ="../assets/delete.svg"
-                        alt="delete"
-                      />
+                          class="cursor-pointer"
+                          src ="../assets/drag.svg"
+                          alt="drag"
+                        />
                     </div>
-                    <img
-                        class="cursor-pointer"
-                        src ="../assets/drag.svg"
-                        alt="drag"
-                      />
+                    <div class="text-primary">
+                      <span class="caption">Балл: </span>
+                      <span class="text-dark caption bold-caption">{{ card.score }}</span>
+                    </div>
                   </div>
-                  <div class="text-primary">
-                    <span class="caption">Балл: </span>
-                    <span class="text-dark caption bold-caption">{{ card.score }}</span>
+                  <div v-for="project in card.projects" :key="project.id">
+                    <q-card flat class="bg-secondary flex flex-center project">
+                      <span class="text-info">{{ project.name }}</span>
+                    </q-card>
                   </div>
-                </div>
-                <div v-for="project in card.projects" :key="project.id">
-                  <q-card flat class="bg-secondary flex flex-center project">
-                    <span class="text-info">{{ project.name }}</span>
-                  </q-card>
                 </div>
               </div>
             </div>
-          </div>
-          <div v-else>
-            <div class="bg-warning card-section empty-section flex flex-center">
-              <div class="text-primary">
-                <span>Список пуст</span>
+            <div v-else>
+              <div class="bg-warning card-section empty-section flex flex-center">
+                <div class="text-primary">
+                  <span>Список пуст</span>
+                </div>
               </div>
             </div>
-          </div>
-        </q-card-section>
-        <q-card-actions class="q-pt-none q-pb-md" align="center">
-          <q-btn
-              @click="modal = true"
-              flat
-              no-caps
-              label="Добавить"
-              color="warning"
-              text-color="primary"
-            />
-        </q-card-actions>
-      </q-card>
+          </q-card-section>
+          <q-card-actions class="q-pt-none q-pb-md" align="center">
+            <q-btn
+                @click="modal = true"
+                flat
+                no-caps
+                label="Добавить"
+                color="warning"
+                text-color="primary"
+              />
+          </q-card-actions>
+        </q-card>
+      </div>
+      <div v-else class="row justify-center" style="margin-top: 15rem">
+        <q-spinner
+          color="accent"
+          size="3em"
+        />
+      </div>
     </section>
     <q-dialog v-model="modal">
       <q-card flat class="modal-card">
