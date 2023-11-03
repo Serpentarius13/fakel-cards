@@ -8,7 +8,7 @@ import PROJECTS from '../json/projects.json'
 export const usePanelStore = defineStore('panel', () => {
   const panelData = reactive([] as panelData)
   const isLoading = ref<boolean>(false)
-  const cardsOriginal = reactive([] as panelDataCard[])
+  const cardsOriginal = reactive([[], [], [], []] as unknown as [panelDataCard[]])
   const projects = reactive(['Не выбрано'] as string[])
 
   function getData () {
@@ -18,7 +18,6 @@ export const usePanelStore = defineStore('panel', () => {
       setTimeout(async () => {
         return await Promise.all([COLUMNS, CARDS, PROJECTS])
           .then((res: Response) => {
-            console.log(res)
             res[0].forEach((column: Column) => panelData.push(column))
             panelData.forEach((column: panelDataColumn, index: number) => {
               column.sortedDown = false
@@ -42,46 +41,42 @@ export const usePanelStore = defineStore('panel', () => {
     }
   }
 
-  function sortDescendingTrue (item: panelDataColumn) {
-    if (cardsOriginal.length) {
-      item.cards!.length = 0
-      cardsOriginal.forEach((card) => item.cards?.push(card))
-      cardsOriginal.length = 0
+  function sortDescendingTrue (item: panelData, index: number) {
+    if (cardsOriginal[index].length) {
+      item[index].cards!.length = 0
+      cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
+      cardsOriginal[index].length = 0
     }
-    item.cards?.forEach((card) => cardsOriginal.push(card))
-    item.cards?.sort((a, b) => b.score - a.score)
-    item.sortedUp = false
-    item.sortedDown = true
-    console.log(cardsOriginal)
+    item[index].cards?.forEach((card) => cardsOriginal[index].push(card))
+    item[index].cards?.sort((a, b) => b.score - a.score)
+    item[index].sortedUp = false
+    item[index].sortedDown = true
   }
 
-  function sortDescendingFalse (item: panelDataColumn) {
-    item.cards!.length = 0
-    cardsOriginal.forEach((card) => item.cards?.push(card))
-    cardsOriginal.length = 0
-    item.sortedDown = false
-    console.log(cardsOriginal)
+  function sortDescendingFalse (item: panelData, index: number) {
+    item[index].cards!.length = 0
+    cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
+    cardsOriginal[index].length = 0
+    item[index].sortedDown = false
   }
 
-  function sortAscendingTrue (item: panelDataColumn) {
-    if (cardsOriginal.length) {
-      item.cards!.length = 0
-      cardsOriginal.forEach((card) => item.cards?.push(card))
-      cardsOriginal.length = 0
+  function sortAscendingTrue (item: panelData, index: number) {
+    if (cardsOriginal[index].length) {
+      item[index].cards!.length = 0
+      cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
+      cardsOriginal[index].length = 0
     }
-    item.cards?.forEach((card) => cardsOriginal.push(card))
-    item.cards?.sort((a, b) => a.score - b.score)
-    item.sortedDown = false
-    item.sortedUp = true
-    console.log(cardsOriginal)
+    item[index].cards?.forEach((card) => cardsOriginal[index].push(card))
+    item[index].cards?.sort((a, b) => a.score - b.score)
+    item[index].sortedDown = false
+    item[index].sortedUp = true
   }
 
-  function sortAscendingFalse (item: panelDataColumn) {
-    item.cards!.length = 0
-    cardsOriginal.forEach((card) => item.cards?.push(card))
-    cardsOriginal.length = 0
-    item.sortedUp = false
-    console.log(cardsOriginal)
+  function sortAscendingFalse (item: panelData, index: number) {
+    item[index].cards!.length = 0
+    cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
+    cardsOriginal[index].length = 0
+    item[index].sortedUp = false
   }
 
   return {

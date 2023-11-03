@@ -61,7 +61,7 @@
     </section>
     <section>
       <div class="row q-gutter-md" v-if="!panelStore.isLoading">
-        <q-card v-for="column in panelStore.panelData" :key="column.id" flat class="bg-warning card">
+        <q-card v-for="(column, index) in panelStore.panelData" :key="column.id" flat class="bg-warning card">
           <q-card-section>
             <div class="row justify-between items-center q-mb-md">
               <div class="card-heading">
@@ -71,28 +71,28 @@
               <div class="row q-gutter-x-xs">
                 <img
                   v-if="!column.sortedDown"
-                  @click="panelStore.sortDescendingTrue(column)"
+                  @click="panelStore.sortDescendingTrue(panelStore.panelData, index)"
                   class="cursor-pointer"
                   src="../assets/arrow_down_gray.svg"
                   alt="arrow down"
                 />
                 <img
                   v-else
-                  @click="panelStore.sortDescendingFalse(column)"
+                  @click="panelStore.sortDescendingFalse(panelStore.panelData, index)"
                   class="cursor-pointer"
                   src ="../assets/arrow_down_blue.svg"
                   alt="arrow down"
                 />
                 <img
                   v-if="!column.sortedUp"
-                  @click="panelStore.sortAscendingTrue(column)"
+                  @click="panelStore.sortAscendingTrue(panelStore.panelData, index)"
                   class="cursor-pointer"
                   src="../assets/arrow_up_gray.svg"
                   alt="arrow up"
                 />
                 <img
                   v-else
-                  @click="panelStore.sortAscendingFalse(column)"
+                  @click="panelStore.sortAscendingFalse(panelStore.panelData, index)"
                   class="cursor-pointer"
                   src="../assets/arrow_up_blue.svg"
                   alt="arrow up"
