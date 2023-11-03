@@ -61,8 +61,10 @@ export const usePanelStore = defineStore('panel', () => {
     if (cardsOriginal[index].length) {
       emptyCardsOriginal(item, index)
     }
+
     item[index].cards?.forEach((card) => cardsOriginal[index].push(card))
     item[index].cards?.sort((a, b) => callback(a, b))
+
     if (prop === 'sortedDown') {
       item[index].sortedUp = false
       item[index].sortedDown = true
@@ -72,14 +74,14 @@ export const usePanelStore = defineStore('panel', () => {
     }
   }
 
-  function sortDescendingFalse (item: PanelData, index: number) {
+  function sortFalse (item: PanelData, index: number, prop: string) {
     emptyCardsOriginal(item, index)
-    item[index].sortedDown = false
-  }
 
-  function sortAscendingFalse (item: PanelData, index: number) {
-    emptyCardsOriginal(item, index)
-    item[index].sortedUp = false
+    if (prop === 'sortedDown') {
+      item[index].sortedDown = false
+    } else if (prop === 'sortedUp') {
+      item[index].sortedUp = false
+    }
   }
 
   return {
@@ -90,7 +92,6 @@ export const usePanelStore = defineStore('panel', () => {
     descendOrder,
     ascendOrder,
     sortTrue,
-    sortDescendingFalse,
-    sortAscendingFalse
+    sortFalse
   }
 })

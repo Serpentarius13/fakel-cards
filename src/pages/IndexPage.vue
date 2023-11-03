@@ -78,7 +78,7 @@
                 />
                 <img
                   v-else
-                  @click="panelStore.sortDescendingFalse(panelStore.panelData, index)"
+                  @click="panelStore.sortFalse(panelStore.panelData, index, 'sortedDown')"
                   class="cursor-pointer"
                   src ="../assets/arrow_down_blue.svg"
                   alt="arrow down"
@@ -92,7 +92,7 @@
                 />
                 <img
                   v-else
-                  @click="panelStore.sortAscendingFalse(panelStore.panelData, index)"
+                  @click="panelStore.sortFalse(panelStore.panelData, index, 'sortedUp')"
                   class="cursor-pointer"
                   src="../assets/arrow_up_blue.svg"
                   alt="arrow up"
