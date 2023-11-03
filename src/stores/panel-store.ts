@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import { panelData, panelDataColumn, panelDataCard } from '../components/models'
+import { panelData, panelDataColumn, panelDataCard, Project } from '../components/models'
 import COLUMNS from '../json/columns.json'
 import CARDS from '../json/cards.json'
 import PROJECTS from '../json/projects.json'
@@ -8,8 +8,8 @@ import PROJECTS from '../json/projects.json'
 export const usePanelStore = defineStore('panel', () => {
   const panelData = reactive([] as panelData)
   const isLoading = ref<boolean>(false)
-
   const cardsOriginal = reactive([] as panelDataCard[])
+  const projects = reactive(['Не выбрано'] as string[])
 
   function getData () {
     if (!localStorage.getItem('panelData')) {
@@ -18,17 +18,18 @@ export const usePanelStore = defineStore('panel', () => {
       setTimeout(async () => {
         return await Promise.all([COLUMNS, CARDS, PROJECTS])
           .then((res) => {
-            res[0].forEach((item) => panelData.push(item))
-
+            res[0].forEach((column) => panelData.push(column))
             panelData.forEach((column, index) => {
               column.sortedDown = false
               column.sortedUp = false
-              column.cards = res[1].filter((item) => item.stage === `stage-${index + 1}`)
+              column.cards = res[1].filter((card) => card.stage === `stage-${index + 1}`)
 
               column.cards.forEach((card) => {
-                card.projects = res[2].filter((item) => item.code === card.project)
+                card.projects = res[2].filter((project) => project.code === card.project)
               })
             })
+
+            res[2].forEach((project) => projects.push(project.name))
 
             localStorage.setItem('panelData', JSON.stringify(panelData))
 
@@ -85,6 +86,7 @@ export const usePanelStore = defineStore('panel', () => {
   return {
     panelData,
     isLoading,
+    projects,
     getData,
     sortDescendingTrue,
     sortDescendingFalse,

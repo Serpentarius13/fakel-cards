@@ -22,7 +22,7 @@ interface Card {
   title: string
 }
 
-type Project = Column
+export type Project = Column
 
 export interface panelDataCard extends Card {
   projects?: Project[]

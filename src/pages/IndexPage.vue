@@ -14,7 +14,7 @@
             outlined
             bg-color="warning"
             v-model="select"
-            :options="options"
+            :options="panelStore.projects"
           >
             <template v-slot:loading>
               <q-spinner
@@ -197,7 +197,7 @@
             outlined
             bg-color="positive"
             v-model="select"
-            :options="options"
+            :options="panelStore.projects"
           />
         </div>
         <div class="q-mt-md">
@@ -234,7 +234,4 @@ const panelStore = usePanelStore()
 const modal = ref<boolean>(false)
 const text = ref<string>('')
 const select = ref<string>('Не выбрано')
-const options = reactive<string[]>([
-  'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-])
 </script>
