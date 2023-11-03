@@ -71,28 +71,28 @@
               <div class="row q-gutter-x-xs">
                 <img
                   v-if="!column.sortedDown"
-                  @click="panelStore.sortDescending(column)"
+                  @click="panelStore.sortDescendingTrue(column)"
                   class="cursor-pointer"
                   src="../assets/arrow_down_gray.svg"
                   alt="arrow down"
                 />
                 <img
                   v-else
-                  @click="column.sortedDown = false"
+                  @click="panelStore.sortDescendingFalse(column)"
                   class="cursor-pointer"
                   src ="../assets/arrow_down_blue.svg"
                   alt="arrow down"
                 />
                 <img
                   v-if="!column.sortedUp"
-                  @click="column.sortedUp = true"
+                  @click="panelStore.sortAscendingTrue(column)"
                   class="cursor-pointer"
                   src="../assets/arrow_up_gray.svg"
                   alt="arrow up"
                 />
                 <img
                   v-else
-                  @click="column.sortedUp = false"
+                  @click="panelStore.sortAscendingFalse(column)"
                   class="cursor-pointer"
                   src="../assets/arrow_up_blue.svg"
                   alt="arrow up"

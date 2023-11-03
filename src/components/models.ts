@@ -24,7 +24,7 @@ interface Card {
 
 type Project = Column
 
-interface panelDataCard extends Card {
+export interface panelDataCard extends Card {
   projects?: Project[]
 }
 
