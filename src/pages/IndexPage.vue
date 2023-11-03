@@ -73,7 +73,7 @@
                   v-if="!column.sortedDown"
                   @click="column.sortedDown = true"
                   class="cursor-pointer"
-                  src ="../assets/arrow_down_gray.svg"
+                  src="../assets/arrow_down_gray.svg"
                   alt="arrow down"
                 />
                 <img
@@ -87,14 +87,14 @@
                   v-if="!column.sortedUp"
                   @click="column.sortedUp = true"
                   class="cursor-pointer"
-                  src ="../assets/arrow_up_gray.svg"
+                  src="../assets/arrow_up_gray.svg"
                   alt="arrow up"
                 />
                 <img
                   v-else
                   @click="column.sortedUp = false"
                   class="cursor-pointer"
-                  src ="../assets/arrow_up_gray.svg"
+                  src="../assets/arrow_up_blue.svg"
                   alt="arrow up"
                 />
               </div>
