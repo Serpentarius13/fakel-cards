@@ -185,7 +185,7 @@
             dense
             outlined
             bg-color="positive"
-            v-model="text"
+            v-model="cardHeading"
           />
         </div>
         <div class="q-mt-md">
@@ -205,11 +205,12 @@
             dense
             outlined
             bg-color="positive"
-            v-model="text"
+            v-model="score"
           />
         </div>
         <q-card-actions align="center">
           <q-btn
+            @click="addCard(modal.stage)"
             style="padding: 0 1rem"
             no-caps
             label="Добавить"
@@ -230,19 +231,27 @@ const panelStore = usePanelStore()
 
 const selectFilter = ref<string>('Не выбрано')
 const modal = reactive({ isOpen: false, stage: 0 })
-const text = ref<string>('')
+const cardHeading = ref<string>('')
+const score = ref<number>(0)
 const selectModal = ref<string>('Не выбрано')
 
-// function addCard (index: number) {
-//   const cards = panelStore.panelData[index].cards
-//   cards!.push({
-//     id: ++cards!.length,
-//     project: false,
-//     score: 0,
-//     stage: `stage-${index}`,
-//     title: 'test'
-//   })
-// }
+function addCard (index: number) {
+  const column = panelStore.panelData.find((column) => column.id === index)
+
+  column?.cards?.push({
+    id: column?.cards?.length + 1,
+    project: selectModal.value === 'Не выбрано' ? false : selectModal.value,
+    score: score.value,
+    stage: `stage-${index}`,
+    title: cardHeading.value
+  })
+
+  cardHeading.value = ''
+  selectModal.value = 'Не выбрано'
+  score.value = 0
+
+  modal.isOpen = false
+}
 
 function triggerModal (stage: number) {
   modal.isOpen = true
@@ -254,7 +263,7 @@ function activateFilter (index: number) {
   if (selectFilter.value === `Проект ${index}`) {
     panelStore.panelData = lSPanelData
     panelStore.panelData.forEach((column) => {
-      column.cards = column.cards?.filter((card) => card.project === `Проект-${index}`)
+      column.cards = column.cards?.filter((card) => card.project === selectFilter.value)
     })
   } else if (selectFilter.value === 'Не выбрано') {
     panelStore.panelData = lSPanelData

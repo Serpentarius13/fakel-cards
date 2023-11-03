@@ -26,7 +26,7 @@ export const usePanelStore = defineStore('panel', () => {
 
               column.cards.forEach((card: Card) => {
                 if (typeof card.project === 'string') {
-                  card.project = card.project.replace('project', 'Проект')
+                  card.project = card.project.replace('project-', 'Проект ')
                 }
               })
             })
