@@ -69,6 +69,8 @@ export const usePanelStore = defineStore('panel', () => {
       lSProjectsFilter.forEach((option: string) => projectsFilter.push(option))
       lSProjectsModal.forEach((option: string) => projectsModal.push(option))
       lSStages.forEach((option: string) => stages.push(option))
+
+      localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
     }
   }
 
@@ -163,8 +165,13 @@ export const usePanelStore = defineStore('panel', () => {
   }
 
   function deleteCard (index: number, obj: Card) {
-    cardsBuffer[index] = cardsBuffer[index].filter((card) => card.id !== obj.id)
     panelData[index].cards = panelData[index].cards?.filter((card) => card.id !== obj.id)
+
+    cardsBuffer[index] = cardsBuffer[index].filter((card) => card.id !== obj.id)
+
+    const bufferPanelData = JSON.parse(localStorage.getItem('bufferPanelData') || '{}')
+    bufferPanelData[index].cards = bufferPanelData[index].cards?.filter((card: Card) => card.id !== obj.id)
+    localStorage.setItem('bufferPanelData', JSON.stringify(bufferPanelData))
   }
 
   return {
