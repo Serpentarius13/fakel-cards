@@ -163,8 +163,8 @@ export const usePanelStore = defineStore('panel', () => {
   }
 
   function deleteCard (index: number, obj: Card) {
+    cardsBuffer[index] = cardsBuffer[index].filter((card) => card.id !== obj.id)
     panelData[index].cards = panelData[index].cards?.filter((card) => card.id !== obj.id)
-    console.log(panelData[index])
   }
 
   return {
