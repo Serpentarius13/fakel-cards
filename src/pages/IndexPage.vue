@@ -68,7 +68,7 @@
                 <span class="text-primary q-mr-xs">&bull;</span>
                 <span>{{ column.name }}</span>
               </div>
-              <div class="row q-gutter-x-xs">
+              <div v-if="column.cards?.length" class="row q-gutter-x-xs">
                 <img
                   v-if="!column.sortedDown"
                   @click="panelStore.sortTrue(panelStore.panelData, index, 'sortedDown', panelStore.descendOrder)"
