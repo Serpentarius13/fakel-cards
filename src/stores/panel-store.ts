@@ -164,7 +164,6 @@ export const usePanelStore = defineStore('panel', () => {
 
   function deleteCard (index: number, obj: Card) {
     panelData[index].cards = panelData[index].cards?.filter((card) => card.id !== obj.id)
-    localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
     console.log(panelData[index])
   }
 
