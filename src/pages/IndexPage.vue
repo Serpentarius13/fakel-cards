@@ -13,7 +13,7 @@
             dense
             outlined
             bg-color="warning"
-            v-model="selectFilter"
+            v-model="panelStore.selectFilter"
             :options="panelStore.projects"
           >
             <template v-slot:loading>
@@ -229,7 +229,6 @@ import { usePanelStore } from '../stores/panel-store'
 
 const panelStore = usePanelStore()
 
-const selectFilter = ref<string>('Не выбрано')
 const modal = reactive({ isOpen: false, stage: 0 })
 const cardHeading = ref<string>('')
 const score = ref<number>(0)
@@ -258,21 +257,9 @@ function triggerModal (stage: number) {
   modal.stage = stage
 }
 
-function activateFilter (index: number) {
-  const lSPanelData = JSON.parse(localStorage.getItem('panelData') || '{}')
-  if (selectFilter.value === `Проект ${index}`) {
-    panelStore.panelData = lSPanelData
-    panelStore.panelData.forEach((column) => {
-      column.cards = column.cards?.filter((card) => card.project === selectFilter.value)
-    })
-  } else if (selectFilter.value === 'Не выбрано') {
-    panelStore.panelData = lSPanelData
-  }
-}
-
-watch(() => selectFilter.value, () => {
+watch(() => panelStore.selectFilter, () => {
   panelStore.projects
     .filter((option) => option !== 'Не выбрано')
-    .forEach((option, index) => activateFilter(++index))
+    .forEach((option, index) => panelStore.activateFilter(++index))
 })
 </script>

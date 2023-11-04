@@ -6,10 +6,13 @@ import CARDS from '../json/cards.json'
 import PROJECTS from '../json/projects.json'
 
 export const usePanelStore = defineStore('panel', () => {
+  const lSPanelData = reactive(JSON.parse(localStorage.getItem('panelData') || '{}'))
+  const lSProjects = reactive(JSON.parse(localStorage.getItem('projects') || '{}'))
   const panelData = reactive([] as PanelData)
   const isLoading = ref<boolean>(false)
   const cardsOriginal = reactive([[], [], [], []] as Card[][])
   const projects = reactive([] as string[])
+  const selectFilter = ref<string>('Не выбрано')
 
   function getData () {
     if (!localStorage.getItem('panelData')) {
@@ -42,12 +45,15 @@ export const usePanelStore = defineStore('panel', () => {
           })
       }, 2000)
     } else {
-      const lSPanelData = JSON.parse(localStorage.getItem('panelData') || '{}')
-      const lSProjects = JSON.parse(localStorage.getItem('projects') || '{}')
-
       lSPanelData.forEach((item: PanelDataColumn) => panelData.push(item))
       lSProjects.forEach((item: string) => projects.push(item))
     }
+  }
+
+  function emptyColumns () {
+    panelData.length = 0
+    const lSPanelData = JSON.parse(localStorage.getItem('panelData') || '{}')
+    lSPanelData.forEach((item: PanelDataColumn) => panelData.push(item))
   }
 
   function emptyCardsOriginal (item: PanelData, index: number) {
@@ -78,7 +84,6 @@ export const usePanelStore = defineStore('panel', () => {
 
   function sortFalse (arr: PanelData, index: number, prop: string) {
     emptyCardsOriginal(arr, index)
-
     if (prop === 'sortedDown') {
       arr[index].sortedDown = false
     } else if (prop === 'sortedUp') {
@@ -86,14 +91,27 @@ export const usePanelStore = defineStore('panel', () => {
     }
   }
 
+  function activateFilter (index: number) {
+    if (selectFilter.value === `Проект ${index}`) {
+      emptyColumns()
+      panelData.forEach((column) => {
+        column.cards = column.cards?.filter((card) => card.project === selectFilter.value)
+      })
+    } else if (selectFilter.value === 'Не выбрано') {
+      emptyColumns()
+    }
+  }
+
   return {
     panelData,
     isLoading,
     projects,
+    selectFilter,
     getData,
     descendOrder,
     ascendOrder,
     sortTrue,
-    sortFalse
+    sortFalse,
+    activateFilter
   }
 })
