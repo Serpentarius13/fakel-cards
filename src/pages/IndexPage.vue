@@ -232,7 +232,6 @@ const panelStore = usePanelStore()
 
 watch(() => panelStore.selectFilter, () => {
   panelStore.projectsFilter
-    .filter((option) => option !== 'Не выбрано')
     .forEach((option, index) => panelStore.activateFilter(++index))
 })
 </script>

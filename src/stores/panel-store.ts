@@ -153,6 +153,8 @@ export const usePanelStore = defineStore('panel', () => {
   }
 
   function activateFilter (index: number) {
+    cardsBuffer.forEach((arr) => { arr.length = 0 })
+
     if (selectFilter.value === `Проект ${index}`) {
       emptyColumns()
       filterCards(selectFilter.value)
