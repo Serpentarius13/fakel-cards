@@ -10,7 +10,7 @@ export const usePanelStore = defineStore('panel', () => {
   const lSProjects = reactive(JSON.parse(localStorage.getItem('projects') || '{}'))
   const panelData = reactive([] as PanelData)
   const isLoading = ref<boolean>(false)
-  const cardsOriginal = reactive([[], [], [], []] as Card[][])
+  const cardsBuffer = reactive([[], [], [], []] as Card[][])
   const projects = reactive([] as string[])
   const selectFilter = ref<string>('Не выбрано')
   const modalAddCard = reactive({ isOpen: false, stage: 0 })
@@ -69,10 +69,10 @@ export const usePanelStore = defineStore('panel', () => {
     })
   }
 
-  function emptyCardsOriginal (item: PanelData, index: number) {
+  function emptyCardsBuffer (item: PanelData, index: number) {
     item[index].cards!.length = 0
-    cardsOriginal[index].forEach((card) => item[index].cards?.push(card))
-    cardsOriginal[index].length = 0
+    cardsBuffer[index].forEach((card) => item[index].cards?.push(card))
+    cardsBuffer[index].length = 0
   }
 
   const descendOrder = (a: Card, b: Card) => b.score - a.score
@@ -102,11 +102,11 @@ export const usePanelStore = defineStore('panel', () => {
   }
 
   function sortTrue (arr: PanelData, index: number, prop: string, callback: (a: Card, b: Card) => number) {
-    if (cardsOriginal[index].length) {
-      emptyCardsOriginal(arr, index)
+    if (cardsBuffer[index].length) {
+      emptyCardsBuffer(arr, index)
     }
 
-    arr[index].cards?.forEach((card) => cardsOriginal[index].push(card))
+    arr[index].cards?.forEach((card) => cardsBuffer[index].push(card))
     arr[index].cards?.sort((a, b) => callback(a, b))
 
     if (prop === 'sortedDown') {
@@ -119,7 +119,7 @@ export const usePanelStore = defineStore('panel', () => {
   }
 
   function sortFalse (arr: PanelData, index: number, prop: string) {
-    emptyCardsOriginal(arr, index)
+    emptyCardsBuffer(arr, index)
     if (prop === 'sortedDown') {
       arr[index].sortedDown = false
     } else if (prop === 'sortedUp') {
