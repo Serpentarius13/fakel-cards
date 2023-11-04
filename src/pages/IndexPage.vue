@@ -146,7 +146,7 @@
           </q-card-section>
           <q-card-actions class="q-pt-none q-pb-md" align="center">
             <q-btn
-              @click="triggerModal(column.id)"
+              @click="panelStore.triggerModal(column.id)"
               flat
               no-caps
               label="Добавить"
@@ -163,19 +163,19 @@
         />
       </div>
     </section>
-    <q-dialog v-model="modal.isOpen">
+    <q-dialog v-model="panelStore.modalAddCard.isOpen">
       <q-card flat class="modal-card">
         <div class="row justify-between">
           <div class="modal-card-heading">
             <p>Добавление</p>
-            <div class="text-primary caption">Студия {{ modal.stage }}</div>
+            <div class="text-primary caption">Студия {{ panelStore.modalAddCard.stage }}</div>
           </div>
           <div class="self-start q-mt-xs">
             <img
               class="cursor-pointer"
               src ="../assets/close.svg"
               alt="close"
-              @click="modal.isOpen = false"
+              @click="panelStore.modalAddCard.isOpen = false"
             />
           </div>
         </div>
@@ -185,7 +185,7 @@
             dense
             outlined
             bg-color="positive"
-            v-model="cardHeading"
+            v-model="panelStore.cardHeading"
           />
         </div>
         <div class="q-mt-md">
@@ -194,7 +194,7 @@
             dense
             outlined
             bg-color="positive"
-            v-model="selectModal"
+            v-model="panelStore.selectModal"
             :options="panelStore.projects"
           />
         </div>
@@ -205,12 +205,12 @@
             dense
             outlined
             bg-color="positive"
-            v-model="score"
+            v-model="panelStore.score"
           />
         </div>
         <q-card-actions align="center">
           <q-btn
-            @click="addCard(modal.stage)"
+            @click="panelStore.addCard(panelStore.modalAddCard.stage)"
             style="padding: 0 1rem"
             no-caps
             label="Добавить"
@@ -224,38 +224,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
+import { watch } from 'vue'
 import { usePanelStore } from '../stores/panel-store'
 
 const panelStore = usePanelStore()
-
-const modal = reactive({ isOpen: false, stage: 0 })
-const cardHeading = ref<string>('')
-const score = ref<number>(0)
-const selectModal = ref<string>('Не выбрано')
-
-function addCard (index: number) {
-  const column = panelStore.panelData.find((column) => column.id === index)
-
-  column?.cards?.push({
-    id: column?.cards?.length + 1,
-    project: selectModal.value === 'Не выбрано' ? false : selectModal.value,
-    score: score.value,
-    stage: `stage-${index}`,
-    title: cardHeading.value
-  })
-
-  cardHeading.value = ''
-  selectModal.value = 'Не выбрано'
-  score.value = 0
-
-  modal.isOpen = false
-}
-
-function triggerModal (stage: number) {
-  modal.isOpen = true
-  modal.stage = stage
-}
 
 watch(() => panelStore.selectFilter, () => {
   panelStore.projects

@@ -13,6 +13,10 @@ export const usePanelStore = defineStore('panel', () => {
   const cardsOriginal = reactive([[], [], [], []] as Card[][])
   const projects = reactive([] as string[])
   const selectFilter = ref<string>('Не выбрано')
+  const modalAddCard = reactive({ isOpen: false, stage: 0 })
+  const cardHeading = ref<string>('')
+  const score = ref<number>(0)
+  const selectModal = ref<string>('Не выбрано')
 
   function getData () {
     if (!localStorage.getItem('panelData')) {
@@ -72,6 +76,27 @@ export const usePanelStore = defineStore('panel', () => {
   const descendOrder = (a: Card, b: Card) => b.score - a.score
   const ascendOrder = (a: Card, b: Card) => a.score - b.score
 
+  function triggerModal (stage: number) {
+    modalAddCard.isOpen = true
+    modalAddCard.stage = stage
+  }
+
+  function addCard (index: number) {
+    panelData[index - 1].cards?.push({
+      id: panelData[index - 1].cards!.length + 1,
+      project: selectModal.value === 'Не выбрано' ? false : selectModal.value,
+      score: score.value,
+      stage: `stage-${index}`,
+      title: cardHeading.value
+    })
+
+    cardHeading.value = ''
+    selectModal.value = 'Не выбрано'
+    score.value = 0
+
+    modalAddCard.isOpen = false
+  }
+
   function sortTrue (arr: PanelData, index: number, prop: string, callback: (a: Card, b: Card) => number) {
     if (cardsOriginal[index].length) {
       emptyCardsOriginal(arr, index)
@@ -115,11 +140,17 @@ export const usePanelStore = defineStore('panel', () => {
     isLoading,
     projects,
     selectFilter,
+    modalAddCard,
+    cardHeading,
+    score,
+    selectModal,
     getData,
     descendOrder,
     ascendOrder,
     sortTrue,
     sortFalse,
-    activateFilter
+    activateFilter,
+    triggerModal,
+    addCard
   }
 })
