@@ -10,44 +10,55 @@
         <div class="q-mt-md">
           <div class="text-primary caption">Заголовок *:</div>
           <q-input
+            :loading="panelStore.isLoading"
+            :disable="panelStore.isLoading"
             dense
             outlined
             bg-color="positive"
-            v-model="text"
+            v-model="panelStore.cardHeading"
           />
         </div>
         <div class="q-mt-md">
           <div class="text-primary caption">Проект:</div>
           <q-select
+            :loading="panelStore.isLoading"
+            :disable="panelStore.isLoading"
             dense
             outlined
             bg-color="positive"
-            v-model="select"
-            :options="options"
+            v-model="panelStore.selectModal"
+            :options="panelStore.projectsModal"
           />
         </div>
         <div class="q-mt-md">
           <div class="text-primary caption">Стадия *:</div>
           <q-select
+            :loading="panelStore.isLoading"
+            :disable="panelStore.isLoading"
             dense
             outlined
             bg-color="positive"
-            v-model="select"
-            :options="options"
+            v-model="panelStore.selectStage"
+            :options="panelStore.stages"
           />
         </div>
         <div class="q-mt-md">
           <div class="text-primary caption">Балл *:</div>
           <q-input
+            :loading="panelStore.isLoading"
+            :disable="panelStore.isLoading"
             class="score"
             dense
             outlined
             bg-color="positive"
-            v-model="text"
+            v-model="panelStore.score"
           />
         </div>
         <q-card-actions align="center" class="q-mt-xl">
           <q-btn
+            @click="addCardWithStage"
+            :loading="panelStore.isLoading"
+            :disable="panelStore.isLoading"
             style="padding: 0 1rem"
             no-caps
             label="Добавить"
@@ -70,12 +81,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { usePanelStore } from '../stores/panel-store'
+import { useRouter } from 'vue-router'
 
-const modal = ref<boolean>(false)
-const text = ref<string>('')
-const select = ref<string>('Не выбрано')
-const options = reactive<string[]>([
-  'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-])
+const panelStore = usePanelStore()
+const router = useRouter()
+
+function addCardWithStage () {
+  panelStore.addCard(panelStore.stages.indexOf(panelStore.selectStage) + 1)
+  panelStore.selectStage = 'Стадия 1'
+  router.push({ path: '/' })
+}
 </script>

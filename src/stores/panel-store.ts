@@ -9,12 +9,15 @@ export const usePanelStore = defineStore('panel', () => {
   const lSPanelData = reactive(JSON.parse(localStorage.getItem('panelData') || '{}'))
   const lSProjectsFilter = reactive(JSON.parse(localStorage.getItem('projectsFilter') || '{}'))
   const lSProjectsModal = reactive(JSON.parse(localStorage.getItem('projectsModal') || '{}'))
+  const lSStages = reactive(JSON.parse(localStorage.getItem('stages') || '{}'))
   const panelData = reactive([] as PanelData)
   const isLoading = ref<boolean>(false)
   const cardsBuffer = reactive([[], [], [], []] as Card[][])
   const projectsFilter = reactive([] as string[])
   const projectsModal = reactive([] as string[])
+  const stages = reactive([] as string[])
   const selectFilter = ref<string>('Не выбрано')
+  const selectStage = ref<string>('Стадия 1')
   const modalAddCard = reactive({ isOpen: false, stage: 0 })
   const cardHeading = ref<string>('')
   const score = ref<number>(0)
@@ -27,7 +30,10 @@ export const usePanelStore = defineStore('panel', () => {
       setTimeout(async () => {
         return await Promise.all([COLUMNS, CARDS, PROJECTS])
           .then((res: Response) => {
-            res[0].forEach((column: Column) => panelData.push(column))
+            res[0].forEach((column: Column) => {
+              panelData.push(column)
+              stages.push(column.name)
+            })
             panelData.forEach((column: PanelDataColumn, index: number) => {
               column.sortedDown = false
               column.sortedUp = false
@@ -39,9 +45,6 @@ export const usePanelStore = defineStore('panel', () => {
                 }
               })
             })
-            localStorage.setItem('panelData', JSON.stringify(panelData))
-
-            localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
 
             res[2].forEach((project: Project) => {
               projectsFilter[0] = 'Не выбрано'
@@ -52,8 +55,11 @@ export const usePanelStore = defineStore('panel', () => {
               projectsModal.push(project.name)
             })
 
+            localStorage.setItem('stages', JSON.stringify(stages))
             localStorage.setItem('projectsFilter', JSON.stringify(projectsFilter))
             localStorage.setItem('projectsModal', JSON.stringify(projectsModal))
+            localStorage.setItem('panelData', JSON.stringify(panelData))
+            localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
 
             isLoading.value = false
           })
@@ -62,6 +68,7 @@ export const usePanelStore = defineStore('panel', () => {
       lSPanelData.forEach((column: PanelDataColumn) => panelData.push(column))
       lSProjectsFilter.forEach((option: string) => projectsFilter.push(option))
       lSProjectsModal.forEach((option: string) => projectsModal.push(option))
+      lSStages.forEach((option: string) => stages.push(option))
     }
   }
 
@@ -87,7 +94,6 @@ export const usePanelStore = defineStore('panel', () => {
   const ascendOrder = (a: Card, b: Card) => a.score - b.score
 
   function triggerModal (stage: number) {
-    emptyColumns()
     selectFilter.value = 'Не выбрано'
 
     modalAddCard.isOpen = true
@@ -160,6 +166,8 @@ export const usePanelStore = defineStore('panel', () => {
     cardHeading,
     score,
     selectModal,
+    selectStage,
+    stages,
     getData,
     descendOrder,
     ascendOrder,
