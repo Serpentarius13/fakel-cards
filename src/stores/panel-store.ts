@@ -39,6 +39,8 @@ export const usePanelStore = defineStore('panel', () => {
             })
             localStorage.setItem('panelData', JSON.stringify(panelData))
 
+            localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
+
             res[2].forEach((project: Project) => {
               projects[0] = 'Не выбрано'
               projects.push(project.name)
@@ -57,8 +59,8 @@ export const usePanelStore = defineStore('panel', () => {
 
   function emptyColumns () {
     panelData.length = 0
-    const lSPanelData = JSON.parse(localStorage.getItem('panelData') || '{}')
-    lSPanelData.forEach((item: PanelDataColumn) => panelData.push(item))
+    const bufferPanelData = JSON.parse(localStorage.getItem('bufferPanelData') || '{}')
+    bufferPanelData.forEach((item: PanelDataColumn) => panelData.push(item))
   }
 
   function filterCards (value: boolean | string) {
@@ -89,6 +91,8 @@ export const usePanelStore = defineStore('panel', () => {
       stage: `stage-${index}`,
       title: cardHeading.value
     })
+
+    localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
 
     cardHeading.value = ''
     selectModal.value = 'Не выбрано'
