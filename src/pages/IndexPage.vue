@@ -114,7 +114,7 @@
                           alt="edit"
                         />
                         <img
-                          @click="console.log(card.id)"
+                          @click="panelStore.deleteCard(index, card)"
                           class="cursor-pointer"
                           src ="../assets/delete.svg"
                           alt="delete"
