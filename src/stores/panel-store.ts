@@ -39,6 +39,7 @@ export const usePanelStore = defineStore('panel', () => {
               projects[0] = 'Не выбрано'
               projects.push(project.name)
             })
+            projects.push('Без проектов')
             localStorage.setItem('projects', JSON.stringify(projects))
 
             isLoading.value = false
@@ -54,6 +55,12 @@ export const usePanelStore = defineStore('panel', () => {
     panelData.length = 0
     const lSPanelData = JSON.parse(localStorage.getItem('panelData') || '{}')
     lSPanelData.forEach((item: PanelDataColumn) => panelData.push(item))
+  }
+
+  function filterCards (value: boolean | string) {
+    panelData.forEach((column) => {
+      column.cards = column.cards?.filter((card) => card.project === value)
+    })
   }
 
   function emptyCardsOriginal (item: PanelData, index: number) {
@@ -94,9 +101,10 @@ export const usePanelStore = defineStore('panel', () => {
   function activateFilter (index: number) {
     if (selectFilter.value === `Проект ${index}`) {
       emptyColumns()
-      panelData.forEach((column) => {
-        column.cards = column.cards?.filter((card) => card.project === selectFilter.value)
-      })
+      filterCards(selectFilter.value)
+    } else if (selectFilter.value === 'Без проектов') {
+      emptyColumns()
+      filterCards(false)
     } else if (selectFilter.value === 'Не выбрано') {
       emptyColumns()
     }
