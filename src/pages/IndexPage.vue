@@ -109,6 +109,7 @@
                           <span>{{ card.title }}</span>
                         </div>
                         <img
+                          @click="panelStore.modalEditCard = true"
                           class="cursor-pointer"
                           src ="../assets/edit.svg"
                           alt="edit"
@@ -215,6 +216,73 @@
             style="padding: 0 1rem"
             no-caps
             label="Добавить"
+            color="accent"
+            unelevated
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="panelStore.modalEditCard">
+      <q-card flat class="modal-card">
+        <div class="row justify-between">
+          <div class="modal-card-heading">
+            <p>Редактирование</p>
+            <div class="text-primary">
+              <span class="caption">Название: </span>
+              <span class="text-dark caption bold-caption">Карточка 1</span>
+            </div>
+            <div class="text-primary">
+              <span class="caption">Балл: </span>
+              <span class="text-dark caption bold-caption">3.5</span>
+            </div>
+            <div class="text-primary">
+              <span class="caption">Проект: </span>
+              <span class="text-dark caption bold-caption">Проект 3</span>
+            </div>
+          </div>
+          <div class="self-start q-mt-xs">
+            <img
+              class="cursor-pointer"
+              src ="../assets/close.svg"
+              alt="close"
+              @click="panelStore.modalEditCard = false"
+            />
+          </div>
+        </div>
+        <div class="q-mt-md">
+          <div class="text-primary caption">Заголовок *:</div>
+          <q-input
+            dense
+            outlined
+            bg-color="positive"
+            v-model="panelStore.cardHeading"
+          />
+        </div>
+        <div class="q-mt-md">
+          <div class="text-primary caption">Проект:</div>
+          <q-select
+            dense
+            outlined
+            bg-color="positive"
+            v-model="panelStore.selectModal"
+            :options="panelStore.projectsModal"
+          />
+        </div>
+        <div class="q-mt-md">
+          <div class="text-primary caption">Балл *:</div>
+          <q-input
+            class="score"
+            dense
+            outlined
+            bg-color="positive"
+            v-model="panelStore.score"
+          />
+        </div>
+        <q-card-actions align="center">
+          <q-btn
+            style="padding: 0 1rem"
+            no-caps
+            label="Применить"
             color="accent"
             unelevated
           />

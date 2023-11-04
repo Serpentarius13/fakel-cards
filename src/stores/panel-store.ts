@@ -19,6 +19,7 @@ export const usePanelStore = defineStore('panel', () => {
   const selectFilter = ref<string>('Не выбрано')
   const selectStage = ref<string>('Стадия 1')
   const modalAddCard = reactive({ isOpen: false, stage: 0 })
+  const modalEditCard = ref<boolean>(false)
   const cardHeading = ref<string>('')
   const score = ref<number>(0)
   const selectModal = ref<string>('Без проекта')
@@ -183,6 +184,7 @@ export const usePanelStore = defineStore('panel', () => {
     projectsModal,
     selectFilter,
     modalAddCard,
+    modalEditCard,
     cardHeading,
     score,
     selectModal,
