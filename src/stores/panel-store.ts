@@ -101,8 +101,14 @@ export const usePanelStore = defineStore('panel', () => {
   }
 
   function addCard (index: number) {
+    const cardIds = panelData.map((column: PanelDataColumn) => {
+      return column.cards?.map((card: Card) => card.id)
+    })
+    const arrOfIds = cardIds.reduce((prev, next) => prev!.concat(next!))
+    const newId: number = Math.max(...arrOfIds!) + 1
+
     panelData[index - 1].cards?.push({
-      id: panelData[index - 1].cards!.length + 1,
+      id: newId,
       project: selectModal.value === 'Без проекта' ? false : selectModal.value,
       score: score.value,
       stage: `stage-${index}`,
@@ -156,6 +162,10 @@ export const usePanelStore = defineStore('panel', () => {
     }
   }
 
+  function deleteCard () {
+    return true
+  }
+
   return {
     panelData,
     isLoading,
@@ -175,6 +185,7 @@ export const usePanelStore = defineStore('panel', () => {
     sortFalse,
     activateFilter,
     triggerModal,
-    addCard
+    addCard,
+    deleteCard
   }
 })

@@ -114,6 +114,7 @@
                           alt="edit"
                         />
                         <img
+                          @click="console.log(card.id)"
                           class="cursor-pointer"
                           src ="../assets/delete.svg"
                           alt="delete"
