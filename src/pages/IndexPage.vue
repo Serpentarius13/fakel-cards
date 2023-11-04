@@ -14,7 +14,7 @@
             outlined
             bg-color="warning"
             v-model="panelStore.selectFilter"
-            :options="panelStore.projects"
+            :options="panelStore.projectsFilter"
           >
             <template v-slot:loading>
               <q-spinner
@@ -195,7 +195,7 @@
             outlined
             bg-color="positive"
             v-model="panelStore.selectModal"
-            :options="panelStore.projects"
+            :options="panelStore.projectsModal"
           />
         </div>
         <div class="q-mt-md">
@@ -230,7 +230,7 @@ import { usePanelStore } from '../stores/panel-store'
 const panelStore = usePanelStore()
 
 watch(() => panelStore.selectFilter, () => {
-  panelStore.projects
+  panelStore.projectsFilter
     .filter((option) => option !== 'Не выбрано')
     .forEach((option, index) => panelStore.activateFilter(++index))
 })
