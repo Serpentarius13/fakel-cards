@@ -67,6 +67,7 @@
           />
           <q-btn
             to="/"
+            @click="close"
             style="padding: 0 1rem"
             flat
             no-caps
@@ -95,8 +96,14 @@ const modalsStore = useModalsStore()
 const router = useRouter()
 
 function addCardWithStage () {
-  crudStore.addCard(bufferStore.stages.indexOf(modalsStore.selectStage) + 1)
+  crudStore.addCard(bufferStore.stages.indexOf(modalsStore.selectStage) + 1, modalsStore.cardHeading, modalsStore.selectModal, modalsStore.score)
   modalsStore.selectStage = 'Стадия 1'
   router.push({ path: '/' })
+}
+
+function close () {
+  modalsStore.closeModal()
+  modalsStore.selectModal = 'Не выбрано'
+  modalsStore.selectStage = 'Стадия 1'
 }
 </script>

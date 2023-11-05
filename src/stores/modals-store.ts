@@ -1,12 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
 import { PanelDataColumn, EditCard, Column, Card } from '../components/models'
-import { useBufferStore } from './buffer-store'
 import { usePanelStore } from './panel-store'
 
 export const useModalsStore = defineStore('modals', () => {
   const panelStore = usePanelStore()
-  const bufferStore = useBufferStore()
 
   const selectStage = ref<string>('Стадия 1')
   const modalAddCard = reactive({ isOpen: false, stage: 0 })
