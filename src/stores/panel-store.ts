@@ -20,6 +20,7 @@ export const usePanelStore = defineStore('panel', () => {
   const selectStage = ref<string>('Стадия 1')
   const modalAddCard = reactive({ isOpen: false, stage: 0 })
   const modalEditCard = reactive<EditCard>({
+    id: 0,
     isOpen: false,
     stage: 0,
     title: '',
@@ -28,7 +29,7 @@ export const usePanelStore = defineStore('panel', () => {
   })
   const cardHeading = ref<string>('')
   const score = ref<number>(0)
-  const selectModal = ref<string>('Без проекта')
+  const selectModal = ref<boolean | string>('Без проекта')
 
   function getData () {
     if (!localStorage.getItem('panelData')) {
@@ -104,10 +105,15 @@ export const usePanelStore = defineStore('panel', () => {
 
   function triggerModalEdit (column: Column, card: Card) {
     modalEditCard.isOpen = true
+    modalEditCard.id = card.id
     modalEditCard.stage = column.id
     modalEditCard.title = card.title
     modalEditCard.score = card.score
     modalEditCard.project = card.project
+
+    cardHeading.value = modalEditCard.title
+    selectModal.value = card.project ? card.project : 'Без проекта'
+    score.value = card.score
   }
 
   function triggerModalAdd (column: Column) {
@@ -134,11 +140,7 @@ export const usePanelStore = defineStore('panel', () => {
 
     localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
 
-    cardHeading.value = ''
-    selectModal.value = 'Без проекта'
-    score.value = 0
-
-    modalAddCard.isOpen = false
+    closeModal()
   }
 
   function sortTrue (arr: PanelData, index: number, prop: string, callback: (a: Card, b: Card) => number) {
@@ -191,6 +193,27 @@ export const usePanelStore = defineStore('panel', () => {
     localStorage.setItem('bufferPanelData', JSON.stringify(bufferPanelData))
   }
 
+  function closeModal () {
+    cardHeading.value = ''
+    selectModal.value = 'Без проекта'
+    score.value = 0
+
+    modalEditCard.isOpen = false
+    modalAddCard.isOpen = false
+  }
+
+  function editCard () {
+    const cardToBeEditted = panelData[modalEditCard.stage - 1].cards?.find((card) => card.id === modalEditCard.id)
+
+    cardToBeEditted!.title = cardHeading.value
+    cardToBeEditted!.project = selectModal.value === 'Без проекта' ? false : selectModal.value
+    cardToBeEditted!.score = score.value
+
+    localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
+
+    closeModal()
+  }
+
   return {
     panelData,
     isLoading,
@@ -204,6 +227,7 @@ export const usePanelStore = defineStore('panel', () => {
     selectModal,
     selectStage,
     stages,
+    closeModal,
     getData,
     descendOrder,
     ascendOrder,
@@ -213,6 +237,7 @@ export const usePanelStore = defineStore('panel', () => {
     triggerModalAdd,
     triggerModalEdit,
     addCard,
-    deleteCard
+    deleteCard,
+    editCard
   }
 })

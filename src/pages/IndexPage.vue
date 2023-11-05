@@ -177,7 +177,7 @@
               class="cursor-pointer"
               src ="../assets/close.svg"
               alt="close"
-              @click="panelStore.modalAddCard.isOpen = false"
+              @click="panelStore.closeModal"
             />
           </div>
         </div>
@@ -228,16 +228,16 @@
           <div class="modal-card-heading">
             <p>Редактирование</p>
             <div class="text-primary">
-              <span class="caption">Название: </span>
+              <span class="caption">Заголовок: </span>
               <span class="text-dark caption bold-caption">{{ panelStore.modalEditCard.title }}</span>
-            </div>
-            <div class="text-primary">
-              <span class="caption">Балл: </span>
-              <span class="text-dark caption bold-caption">{{ panelStore.modalEditCard.score }}</span>
             </div>
             <div class="text-primary">
               <span class="caption">Проект: </span>
               <span class="text-dark caption bold-caption">{{ panelStore.modalEditCard.project ? panelStore.modalEditCard.project : 'Без проекта' }}</span>
+            </div>
+            <div class="text-primary">
+              <span class="caption">Балл: </span>
+              <span class="text-dark caption bold-caption">{{ panelStore.modalEditCard.score }}</span>
             </div>
           </div>
           <div class="self-start q-mt-xs">
@@ -245,7 +245,7 @@
               class="cursor-pointer"
               src ="../assets/close.svg"
               alt="close"
-              @click="panelStore.modalEditCard.isOpen = false"
+              @click="panelStore.closeModal"
             />
           </div>
         </div>
@@ -280,6 +280,7 @@
         </div>
         <q-card-actions align="center">
           <q-btn
+            @click="panelStore.editCard"
             style="padding: 0 1rem"
             no-caps
             label="Применить"
