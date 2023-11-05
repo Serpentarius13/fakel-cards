@@ -109,7 +109,7 @@
                           <span>{{ card.title }}</span>
                         </div>
                         <img
-                          @click="panelStore.modalEditCard = true"
+                          @click="panelStore.triggerModalEdit(card)"
                           class="cursor-pointer"
                           src ="../assets/edit.svg"
                           alt="edit"
@@ -148,7 +148,7 @@
           </q-card-section>
           <q-card-actions class="q-pt-none q-pb-md" align="center">
             <q-btn
-              @click="panelStore.triggerModal(column.id)"
+              @click="panelStore.triggerModalAdd(column)"
               flat
               no-caps
               label="Добавить"
@@ -222,22 +222,22 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="panelStore.modalEditCard">
+    <q-dialog v-model="panelStore.modalEditCard.isOpen">
       <q-card flat class="modal-card">
         <div class="row justify-between">
           <div class="modal-card-heading">
             <p>Редактирование</p>
             <div class="text-primary">
               <span class="caption">Название: </span>
-              <span class="text-dark caption bold-caption">Карточка 1</span>
+              <span class="text-dark caption bold-caption">{{ panelStore.modalEditCard.title }}</span>
             </div>
             <div class="text-primary">
               <span class="caption">Балл: </span>
-              <span class="text-dark caption bold-caption">3.5</span>
+              <span class="text-dark caption bold-caption">{{ panelStore.modalEditCard.score }}</span>
             </div>
             <div class="text-primary">
               <span class="caption">Проект: </span>
-              <span class="text-dark caption bold-caption">Проект 3</span>
+              <span class="text-dark caption bold-caption">{{ panelStore.modalEditCard.project ? panelStore.modalEditCard.project : 'Без проекта' }}</span>
             </div>
           </div>
           <div class="self-start q-mt-xs">
@@ -245,7 +245,7 @@
               class="cursor-pointer"
               src ="../assets/close.svg"
               alt="close"
-              @click="panelStore.modalEditCard = false"
+              @click="panelStore.modalEditCard.isOpen = false"
             />
           </div>
         </div>

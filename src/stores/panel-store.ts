@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import { PanelData, PanelDataColumn, Column, Card, Project, Response } from '../components/models'
+import { PanelData, PanelDataColumn, EditCard, Column, Card, Project, Response } from '../components/models'
 import COLUMNS from '../json/columns.json'
 import CARDS from '../json/cards.json'
 import PROJECTS from '../json/projects.json'
@@ -19,7 +19,12 @@ export const usePanelStore = defineStore('panel', () => {
   const selectFilter = ref<string>('Не выбрано')
   const selectStage = ref<string>('Стадия 1')
   const modalAddCard = reactive({ isOpen: false, stage: 0 })
-  const modalEditCard = ref<boolean>(false)
+  const modalEditCard = reactive<EditCard>({
+    isOpen: false,
+    title: '',
+    score: 0,
+    project: false
+  })
   const cardHeading = ref<string>('')
   const score = ref<number>(0)
   const selectModal = ref<string>('Без проекта')
@@ -96,11 +101,18 @@ export const usePanelStore = defineStore('panel', () => {
   const descendOrder = (a: Card, b: Card) => b.score - a.score
   const ascendOrder = (a: Card, b: Card) => a.score - b.score
 
-  function triggerModal (stage: number) {
+  function triggerModalEdit (card: Card) {
+    modalEditCard.isOpen = true
+    modalEditCard.title = card.title
+    modalEditCard.score = card.score
+    modalEditCard.project = card.project
+  }
+
+  function triggerModalAdd (column: Column) {
     selectFilter.value = 'Не выбрано'
 
     modalAddCard.isOpen = true
-    modalAddCard.stage = stage
+    modalAddCard.stage = column.id
   }
 
   function addCard (index: number) {
@@ -196,7 +208,8 @@ export const usePanelStore = defineStore('panel', () => {
     sortTrue,
     sortFalse,
     activateFilter,
-    triggerModal,
+    triggerModalAdd,
+    triggerModalEdit,
     addCard,
     deleteCard
   }

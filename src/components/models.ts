@@ -22,6 +22,13 @@ export interface Card {
   title: string
 }
 
+export interface EditCard {
+  isOpen: boolean
+  project: boolean | string
+  score: number
+  title: string
+}
+
 export type Project = Column
 
 export type Response = [Column[], Card[], Project[]]
