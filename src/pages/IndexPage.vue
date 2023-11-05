@@ -213,14 +213,13 @@
         </div>
         <q-card-actions align="center">
           <q-btn
-            @click="crudStore.addCard(modalsStore.modalAddCard.stage)"
+            @click="crudStore.addCard(modalsStore.modalAddCard.stage, modalsStore.cardHeading, modalsStore.score, modalsStore.selectModal)"
             style="padding: 0 1rem"
             no-caps
             label="Добавить"
             color="accent"
             unelevated
           />
-          <q-btn label="test" @click="console.log({test: modalsStore.cardHeading})" color="red" />
         </q-card-actions>
       </q-card>
     </q-dialog>

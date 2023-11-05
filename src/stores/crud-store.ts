@@ -18,7 +18,7 @@ export const useCrudStore = defineStore('crud', () => {
   const panelData = reactive(panelStore.panelData)
   const cardsBuffer = reactive(bufferStore.cardsBuffer)
 
-  function addCard (index: number) {
+  function addCard (index: number, cardTitle: string, cardScore: number, cardProject: boolean | string) {
     const cardIds = panelData.map((column: PanelDataColumn) => {
       return column.cards?.map((card: Card) => card.id)
     })
@@ -27,10 +27,10 @@ export const useCrudStore = defineStore('crud', () => {
 
     panelData[index - 1].cards?.push({
       id: newId,
-      project: selectModal.value === 'Без проекта' ? false : selectModal.value,
-      score: score.value,
+      project: cardProject === 'Без проекта' ? false : cardProject,
+      score: cardScore,
       stage: `stage-${index}`,
-      title: cardHeading.value
+      title: cardTitle
     })
 
     localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
