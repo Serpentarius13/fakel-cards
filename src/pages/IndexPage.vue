@@ -101,10 +101,10 @@
               </div>
             </div>
             <draggable
+              handle=".handle"
               group="cards"
               itemKey="id"
               :list="column.cards"
-              @change="rewriteBuffer"
             >
               <template #item="{ element }">
                 <div class="bg-white card-section column justify-between q-mt-md">
@@ -128,7 +128,8 @@
                         />
                       </div>
                       <img
-                        class="cursor-pointer"
+                        v-if="filteringStore.selectFilter === 'Не выбрано' && !column.sortedDown && !column.sortedUp"
+                        class="cursor-pointer handle"
                         src ="../assets/drag.svg"
                         alt="drag"
                       />
@@ -307,6 +308,7 @@ import { useBufferStore } from '../stores/buffer-store'
 import { useSortingStore } from '../stores/sorting-store'
 import { useModalsStore } from '../stores/modals-store'
 import { useCrudStore } from '../stores/crud-store'
+import { PanelData } from 'src/components/models'
 
 const panelStore = usePanelStore()
 const filteringStore = useFilteringStore()
