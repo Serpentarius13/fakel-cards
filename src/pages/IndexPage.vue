@@ -24,9 +24,10 @@
             </template>
           </q-select>
           <q-btn
+            to="/add"
             :loading="panelStore.isLoading"
             :disable="panelStore.isLoading"
-            to="/add"
+            @click="panelStore.selectFilter = 'Не выбрано'"
             no-caps
             class="q-px-lg"
             color="accent"
@@ -122,10 +123,11 @@
                         />
                       </div>
                       <img
-                          class="cursor-pointer"
-                          src ="../assets/drag.svg"
-                          alt="drag"
-                        />
+                        v-if="panelStore.selectFilter === 'Не выбрано'"
+                        class="cursor-pointer"
+                        src ="../assets/drag.svg"
+                        alt="drag"
+                      />
                     </div>
                     <div class="text-primary">
                       <span class="caption">Балл: </span>
