@@ -20,12 +20,17 @@ export const useBufferStore = defineStore('buffer', () => {
     cardsBuffer[index].length = 0
   }
 
+  function rewriteBuffer (arr: PanelData) {
+    localStorage.setItem('bufferPanelData', JSON.stringify(arr))
+  }
+
   return {
     cardsBuffer,
     stages,
     projectsFilter,
     projectsModal,
     emptyColumns,
-    emptyCardsBuffer
+    emptyCardsBuffer,
+    rewriteBuffer
   }
 })

@@ -105,6 +105,7 @@
               group="cards"
               itemKey="id"
               :list="column.cards"
+              @change="bufferStore.rewriteBuffer(panelStore.panelData)"
             >
               <template #item="{ element }">
                 <div class="bg-white card-section column justify-between q-mt-md">
@@ -128,7 +129,7 @@
                         />
                       </div>
                       <img
-                        v-if="filteringStore.selectFilter === 'Не выбрано' && !column.sortedDown && !column.sortedUp"
+                        v-if="filteringStore.selectFilter === 'Не выбрано' && panelStore.panelData.every((column) => !column.sortedDown && !column.sortedUp)"
                         class="cursor-pointer handle"
                         src ="../assets/drag.svg"
                         alt="drag"
@@ -308,7 +309,6 @@ import { useBufferStore } from '../stores/buffer-store'
 import { useSortingStore } from '../stores/sorting-store'
 import { useModalsStore } from '../stores/modals-store'
 import { useCrudStore } from '../stores/crud-store'
-import { PanelData } from 'src/components/models'
 
 const panelStore = usePanelStore()
 const filteringStore = useFilteringStore()
@@ -316,10 +316,6 @@ const bufferStore = useBufferStore()
 const sortingStore = useSortingStore()
 const modalsStore = useModalsStore()
 const crudStore = useCrudStore()
-
-function rewriteBuffer () {
-  localStorage.setItem('bufferPanelData', JSON.stringify(panelStore.panelData))
-}
 
 watch(() => filteringStore.selectFilter, () => {
   bufferStore.projectsFilter
