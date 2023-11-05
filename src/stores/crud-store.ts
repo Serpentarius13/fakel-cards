@@ -18,7 +18,7 @@ export const useCrudStore = defineStore('crud', () => {
   const panelData = reactive(panelStore.panelData)
   const cardsBuffer = reactive(bufferStore.cardsBuffer)
 
-  function addCard (index: number, cardTitle: string, cardScore: number, cardProject: boolean | string) {
+  function addCard (index: number, cardTitle: string, cardProject: boolean | string, cardScore: number) {
     const cardIds = panelData.map((column: PanelDataColumn) => {
       return column.cards?.map((card: Card) => card.id)
     })
@@ -38,14 +38,16 @@ export const useCrudStore = defineStore('crud', () => {
     modalStore.closeModal()
   }
 
-  function editCard () {
+  function editCard (cardTitle: string, cardProject: boolean | string, cardScore: number) {
     const cardToBeEditted = panelData[modalEditCard.stage - 1].cards?.find((card) => card.id === modalEditCard.id)
 
-    cardToBeEditted!.title = cardHeading.value
-    cardToBeEditted!.project = selectModal.value === 'Без проекта' ? false : selectModal.value
-    cardToBeEditted!.score = score.value
+    cardToBeEditted!.title = cardTitle
+    cardToBeEditted!.project = cardProject === 'Без проекта' ? false : cardProject
+    cardToBeEditted!.score = cardScore
 
     localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
+
+    modalStore.closeModal()
   }
 
   function deleteCard (index: number, obj: Card) {

@@ -29,9 +29,7 @@ export const useModalsStore = defineStore('modals', () => {
     modalAddCard.stage = column.id
   }
 
-  function triggerModalEdit (column: PanelDataColumn, card: Card, index: number) {
-    bufferStore.emptyCardsBuffer(panelData, index)
-
+  function triggerModalEdit (column: PanelDataColumn, card: Card) {
     column.sortedDown = false
     column.sortedUp = false
 
@@ -49,9 +47,7 @@ export const useModalsStore = defineStore('modals', () => {
 
   function closeModal () {
     cardHeading.value = ''
-    selectModal.value = 'Без проекта'
     score.value = 0
-
     modalEditCard.isOpen = false
     modalAddCard.isOpen = false
   }

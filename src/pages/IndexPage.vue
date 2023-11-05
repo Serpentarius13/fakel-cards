@@ -110,7 +110,7 @@
                           <span>{{ card.title }}</span>
                         </div>
                         <img
-                          @click="modalsStore.triggerModalEdit(column, card, index)"
+                          @click="modalsStore.triggerModalEdit(column, card)"
                           class="cursor-pointer"
                           src ="../assets/edit.svg"
                           alt="edit"
@@ -214,7 +214,7 @@
         </div>
         <q-card-actions align="center">
           <q-btn
-            @click="crudStore.addCard(modalsStore.modalAddCard.stage, modalsStore.cardHeading, modalsStore.score, modalsStore.selectModal)"
+            @click="crudStore.addCard(modalsStore.modalAddCard.stage, modalsStore.cardHeading, modalsStore.selectModal, modalsStore.score)"
             style="padding: 0 1rem"
             no-caps
             label="Добавить"
@@ -282,7 +282,7 @@
         </div>
         <q-card-actions align="center">
           <q-btn
-            @click="crudStore.editCard"
+            @click="crudStore.editCard(modalsStore.cardHeading, modalsStore.selectModal, modalsStore.score)"
             style="padding: 0 1rem"
             no-caps
             label="Применить"
