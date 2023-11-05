@@ -41,6 +41,6 @@ export const useSortingStore = defineStore('sorting', () => {
     descendOrder,
     ascendOrder,
     sortTrue,
-    sortFalse,
+    sortFalse
   }
 })

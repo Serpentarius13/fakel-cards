@@ -10,12 +10,6 @@ export const useModalsStore = defineStore('modals', () => {
   const filteringStore = useFilteringStore()
   const bufferStore = useBufferStore()
 
-  const panelData = reactive(panelStore.panelData)
-  const selectFilter = ref(filteringStore.selectFilter)
-
-  const projectsFilter = reactive([] as string[])
-  const projectsModal = reactive([] as string[])
-  const stages = reactive([] as string[])
   const selectStage = ref<string>('Стадия 1')
   const modalAddCard = reactive({ isOpen: false, stage: 0 })
   const modalEditCard = reactive<EditCard>({
@@ -29,6 +23,9 @@ export const useModalsStore = defineStore('modals', () => {
   const cardHeading = ref<string>('')
   const score = ref<number>(0)
   const selectModal = ref<boolean | string>('Без проекта')
+
+  const panelData = reactive(panelStore.panelData)
+  const selectFilter = ref(filteringStore.selectFilter)
 
   function triggerModalAdd (column: Column) {
     selectFilter.value = 'Не выбрано'
@@ -67,9 +64,7 @@ export const useModalsStore = defineStore('modals', () => {
   }
 
   return {
-    projectsFilter,
-    projectsModal,
-    stages,
+    panelData,
     selectStage,
     selectModal,
     cardHeading,

@@ -13,8 +13,8 @@
             dense
             outlined
             bg-color="warning"
-            v-model="panelStore.selectFilter"
-            :options="panelStore.projectsFilter"
+            v-model="filteringStore.selectFilter"
+            :options="bufferStore.projectsFilter"
           >
             <template v-slot:loading>
               <q-spinner
@@ -27,7 +27,7 @@
             to="/add"
             :loading="panelStore.isLoading"
             :disable="panelStore.isLoading"
-            @click="panelStore.selectFilter = 'Не выбрано'"
+            @click="filteringStore.selectFilter = 'Не выбрано'"
             no-caps
             class="q-px-lg"
             color="accent"
@@ -72,28 +72,28 @@
               <div v-if="column.cards?.length" class="row q-gutter-x-xs">
                 <img
                   v-if="!column.sortedDown"
-                  @click="panelStore.sortTrue(panelStore.panelData, index, 'sortedDown', panelStore.descendOrder)"
+                  @click="sortingStore.sortTrue(panelStore.panelData, index, 'sortedDown', sortingStore.descendOrder)"
                   class="cursor-pointer"
                   src="../assets/arrow_down_gray.svg"
                   alt="arrow down"
                 />
                 <img
                   v-else
-                  @click="panelStore.sortFalse(panelStore.panelData, index, 'sortedDown')"
+                  @click="sortingStore.sortFalse(panelStore.panelData, index, 'sortedDown')"
                   class="cursor-pointer"
                   src ="../assets/arrow_down_blue.svg"
                   alt="arrow down"
                 />
                 <img
                   v-if="!column.sortedUp"
-                  @click="panelStore.sortTrue(panelStore.panelData, index, 'sortedUp', panelStore.ascendOrder)"
+                  @click="sortingStore.sortTrue(panelStore.panelData, index, 'sortedUp', sortingStore.ascendOrder)"
                   class="cursor-pointer"
                   src="../assets/arrow_up_gray.svg"
                   alt="arrow up"
                 />
                 <img
                   v-else
-                  @click="panelStore.sortFalse(panelStore.panelData, index, 'sortedUp')"
+                  @click="sortingStore.sortFalse(panelStore.panelData, index, 'sortedUp')"
                   class="cursor-pointer"
                   src="../assets/arrow_up_blue.svg"
                   alt="arrow up"
@@ -110,20 +110,20 @@
                           <span>{{ card.title }}</span>
                         </div>
                         <img
-                          @click="panelStore.triggerModalEdit(column, card, index)"
+                          @click="modalsStore.triggerModalEdit(column, card, index)"
                           class="cursor-pointer"
                           src ="../assets/edit.svg"
                           alt="edit"
                         />
                         <img
-                          @click="panelStore.deleteCard(index, card)"
+                          @click="crudStore.deleteCard(index, card)"
                           class="cursor-pointer"
                           src ="../assets/delete.svg"
                           alt="delete"
                         />
                       </div>
                       <img
-                        v-if="panelStore.selectFilter === 'Не выбрано'"
+                        v-if="filteringStore.selectFilter === 'Не выбрано'"
                         class="cursor-pointer"
                         src ="../assets/drag.svg"
                         alt="drag"
@@ -150,7 +150,7 @@
           </q-card-section>
           <q-card-actions class="q-pt-none q-pb-md" align="center">
             <q-btn
-              @click="panelStore.triggerModalAdd(column)"
+              @click="modalsStore.triggerModalAdd(column)"
               flat
               no-caps
               label="Добавить"
@@ -167,19 +167,18 @@
         />
       </div>
     </section>
-    <q-dialog v-model="panelStore.modalAddCard.isOpen">
+    <q-dialog v-model="modalsStore.modalAddCard.isOpen">
       <q-card flat class="modal-card">
         <div class="row justify-between">
           <div class="modal-card-heading">
             <p>Добавление</p>
-            <div class="text-primary caption">Студия {{ panelStore.modalAddCard.stage }}</div>
+            <div class="text-primary caption">Студия {{ modalsStore.modalAddCard.stage }}</div>
           </div>
           <div class="self-start q-mt-xs">
             <img
               class="cursor-pointer"
               src ="../assets/close.svg"
               alt="close"
-              @click="panelStore.closeModal"
             />
           </div>
         </div>
@@ -189,7 +188,7 @@
             dense
             outlined
             bg-color="positive"
-            v-model="panelStore.cardHeading"
+            v-model="modalsStore.cardHeading"
           />
         </div>
         <div class="q-mt-md">
@@ -198,8 +197,8 @@
             dense
             outlined
             bg-color="positive"
-            v-model="panelStore.selectModal"
-            :options="panelStore.projectsModal"
+            v-model="modalsStore.selectModal"
+            :options="bufferStore.projectsModal"
           />
         </div>
         <div class="q-mt-md">
@@ -209,37 +208,38 @@
             dense
             outlined
             bg-color="positive"
-            v-model="panelStore.score"
+            v-model="modalsStore.score"
           />
         </div>
         <q-card-actions align="center">
           <q-btn
-            @click="panelStore.addCard(panelStore.modalAddCard.stage)"
+            @click="crudStore.addCard(modalsStore.modalAddCard.stage)"
             style="padding: 0 1rem"
             no-caps
             label="Добавить"
             color="accent"
             unelevated
           />
+          <q-btn label="test" @click="console.log({test: modalsStore.cardHeading})" color="red" />
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="panelStore.modalEditCard.isOpen">
+    <q-dialog v-model="modalsStore.modalEditCard.isOpen">
       <q-card flat class="modal-card">
         <div class="row justify-between">
           <div class="modal-card-heading">
             <p>Редактирование</p>
             <div class="text-primary">
               <span class="caption">Заголовок: </span>
-              <span class="text-dark caption bold-caption">{{ panelStore.modalEditCard.title }}</span>
+              <span class="text-dark caption bold-caption">{{ modalsStore.modalEditCard.title }}</span>
             </div>
             <div class="text-primary">
               <span class="caption">Проект: </span>
-              <span class="text-dark caption bold-caption">{{ panelStore.modalEditCard.project ? panelStore.modalEditCard.project : 'Без проекта' }}</span>
+              <span class="text-dark caption bold-caption">{{ modalsStore.modalEditCard.project ? modalsStore.modalEditCard.project : 'Без проекта' }}</span>
             </div>
             <div class="text-primary">
               <span class="caption">Балл: </span>
-              <span class="text-dark caption bold-caption">{{ panelStore.modalEditCard.score }}</span>
+              <span class="text-dark caption bold-caption">{{ modalsStore.modalEditCard.score }}</span>
             </div>
           </div>
           <div class="self-start q-mt-xs">
@@ -247,7 +247,6 @@
               class="cursor-pointer"
               src ="../assets/close.svg"
               alt="close"
-              @click="panelStore.closeModal"
             />
           </div>
         </div>
@@ -257,7 +256,7 @@
             dense
             outlined
             bg-color="positive"
-            v-model="panelStore.cardHeading"
+            v-model="modalsStore.cardHeading"
           />
         </div>
         <div class="q-mt-md">
@@ -266,8 +265,8 @@
             dense
             outlined
             bg-color="positive"
-            v-model="panelStore.selectModal"
-            :options="panelStore.projectsModal"
+            v-model="modalsStore.selectModal"
+            :options="bufferStore.projectsModal"
           />
         </div>
         <div class="q-mt-md">
@@ -277,12 +276,12 @@
             dense
             outlined
             bg-color="positive"
-            v-model="panelStore.score"
+            v-model="modalsStore.score"
           />
         </div>
         <q-card-actions align="center">
           <q-btn
-            @click="panelStore.editCard"
+            @click="crudStore.editCard"
             style="padding: 0 1rem"
             no-caps
             label="Применить"
@@ -298,11 +297,21 @@
 <script setup lang="ts">
 import { watch } from 'vue'
 import { usePanelStore } from '../stores/panel-store'
+import { useFilteringStore } from '../stores/filtering-store'
+import { useBufferStore } from '../stores/buffer-store'
+import { useSortingStore } from '../stores/sorting-store'
+import { useModalsStore } from '../stores/modals-store'
+import { useCrudStore } from '../stores/crud-store'
 
 const panelStore = usePanelStore()
+const filteringStore = useFilteringStore()
+const bufferStore = useBufferStore()
+const sortingStore = useSortingStore()
+const modalsStore = useModalsStore()
+const crudStore = useCrudStore()
 
-watch(() => panelStore.selectFilter, () => {
-  panelStore.projectsFilter
-    .forEach((option, index) => panelStore.activateFilter(++index))
+watch(() => filteringStore.selectFilter, () => {
+  bufferStore.projectsFilter
+    .forEach((option, index) => filteringStore.activateFilter(++index))
 })
 </script>

@@ -15,7 +15,7 @@
             dense
             outlined
             bg-color="positive"
-            v-model="panelStore.cardHeading"
+            v-model="modalsStore.cardHeading"
           />
         </div>
         <div class="q-mt-md">
@@ -26,8 +26,8 @@
             dense
             outlined
             bg-color="positive"
-            v-model="panelStore.selectModal"
-            :options="panelStore.projectsModal"
+            v-model="modalsStore.selectModal"
+            :options="bufferStore.projectsModal"
           />
         </div>
         <div class="q-mt-md">
@@ -38,8 +38,8 @@
             dense
             outlined
             bg-color="positive"
-            v-model="panelStore.selectStage"
-            :options="panelStore.stages"
+            v-model="modalsStore.selectStage"
+            :options="bufferStore.stages"
           />
         </div>
         <div class="q-mt-md">
@@ -51,7 +51,7 @@
             dense
             outlined
             bg-color="positive"
-            v-model="panelStore.score"
+            v-model="modalsStore.score"
           />
         </div>
         <q-card-actions align="center" class="q-mt-xl">
@@ -82,14 +82,21 @@
 
 <script setup lang="ts">
 import { usePanelStore } from '../stores/panel-store'
+import { useCrudStore } from '../stores/crud-store'
 import { useRouter } from 'vue-router'
+import { useBufferStore } from 'src/stores/buffer-store'
+import { useModalsStore } from 'src/stores/modals-store'
 
 const panelStore = usePanelStore()
+const crudStore = useCrudStore()
+const bufferStore = useBufferStore()
+const modalsStore = useModalsStore()
+
 const router = useRouter()
 
 function addCardWithStage () {
-  panelStore.addCard(panelStore.stages.indexOf(panelStore.selectStage) + 1)
-  panelStore.selectStage = 'Стадия 1'
+  crudStore.addCard(bufferStore.stages.indexOf(modalsStore.selectStage) + 1)
+  modalsStore.selectStage = 'Стадия 1'
   router.push({ path: '/' })
 }
 </script>

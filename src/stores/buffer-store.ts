@@ -1,18 +1,17 @@
 import { defineStore } from 'pinia'
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { PanelData, PanelDataColumn, Card } from '../components/models'
-import { usePanelStore } from './panel-store'
 
 export const useBufferStore = defineStore('buffer', () => {
-  const panelStore = usePanelStore()
-
   const cardsBuffer = reactive([[], [], [], []] as Card[][])
-  const panelData = reactive(panelStore.panelData)
+  const stages = reactive([] as string[])
+  const projectsFilter = reactive([] as string[])
+  const projectsModal = reactive([] as string[])
 
-  function emptyColumns () {
-    panelData.length = 0
+  function emptyColumns (arr: PanelData) {
+    arr.length = 0
     const bufferPanelData = JSON.parse(localStorage.getItem('bufferPanelData') || '{}')
-    bufferPanelData.forEach((column: PanelDataColumn) => panelData.push(column))
+    bufferPanelData.forEach((column: PanelDataColumn) => arr.push(column))
   }
 
   function emptyCardsBuffer (item: PanelData, index: number) {
@@ -21,5 +20,12 @@ export const useBufferStore = defineStore('buffer', () => {
     cardsBuffer[index].length = 0
   }
 
-  return { cardsBuffer, emptyColumns, emptyCardsBuffer }
+  return {
+    cardsBuffer,
+    stages,
+    projectsFilter,
+    projectsModal,
+    emptyColumns,
+    emptyCardsBuffer
+  }
 })

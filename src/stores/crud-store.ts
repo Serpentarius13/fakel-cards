@@ -1,14 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
 import { PanelDataColumn, Card } from '../components/models'
-import { useFilteringStore } from './filtering-store'
 import { useBufferStore } from './buffer-store'
 import { usePanelStore } from './panel-store'
 import { useModalsStore } from './modals-store'
 
 export const useCrudStore = defineStore('crud', () => {
   const panelStore = usePanelStore()
-  const filteringStore = useFilteringStore()
   const bufferStore = useBufferStore()
   const modalStore = useModalsStore()
 
@@ -48,8 +46,6 @@ export const useCrudStore = defineStore('crud', () => {
     cardToBeEditted!.score = score.value
 
     localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
-
-    modalStore.closeModal()
   }
 
   function deleteCard (index: number, obj: Card) {
@@ -63,6 +59,7 @@ export const useCrudStore = defineStore('crud', () => {
   }
 
   return {
+    panelData,
     addCard,
     editCard,
     deleteCard
