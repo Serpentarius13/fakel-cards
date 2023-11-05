@@ -21,6 +21,7 @@ export const usePanelStore = defineStore('panel', () => {
   const modalAddCard = reactive({ isOpen: false, stage: 0 })
   const modalEditCard = reactive<EditCard>({
     isOpen: false,
+    stage: 0,
     title: '',
     score: 0,
     project: false
@@ -101,8 +102,9 @@ export const usePanelStore = defineStore('panel', () => {
   const descendOrder = (a: Card, b: Card) => b.score - a.score
   const ascendOrder = (a: Card, b: Card) => a.score - b.score
 
-  function triggerModalEdit (card: Card) {
+  function triggerModalEdit (column: Column, card: Card) {
     modalEditCard.isOpen = true
+    modalEditCard.stage = column.id
     modalEditCard.title = card.title
     modalEditCard.score = card.score
     modalEditCard.project = card.project

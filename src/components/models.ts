@@ -23,6 +23,7 @@ export interface Card {
 }
 
 export interface EditCard {
+  stage: number
   isOpen: boolean
   project: boolean | string
   score: number
