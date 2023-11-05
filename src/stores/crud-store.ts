@@ -25,29 +25,33 @@ export const useCrudStore = defineStore('crud', () => {
     const arrOfIds = cardIds.reduce((prev, next) => prev!.concat(next!))
     const newId: number = Math.max(...arrOfIds!) + 1
 
-    panelData[index - 1].cards?.push({
-      id: newId,
-      project: cardProject === 'Без проекта' ? false : cardProject,
-      score: cardScore,
-      stage: `stage-${index}`,
-      title: cardTitle
-    })
+    if (cardTitle.length <= 20 && +cardScore < 10 && +cardScore > 0) {
+      panelData[index - 1].cards?.push({
+        id: newId,
+        project: cardProject === 'Без проекта' ? false : cardProject,
+        score: cardScore,
+        stage: `stage-${index}`,
+        title: cardTitle
+      })
 
-    localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
+      localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
 
-    modalStore.closeModal()
+      modalStore.closeModal()
+    }
   }
 
   function editCard (cardTitle: string, cardProject: boolean | string, cardScore: number) {
     const cardToBeEditted = panelData[modalEditCard.stage - 1].cards?.find((card) => card.id === modalEditCard.id)
 
-    cardToBeEditted!.title = cardTitle
-    cardToBeEditted!.project = cardProject === 'Без проекта' ? false : cardProject
-    cardToBeEditted!.score = cardScore
+    if (cardTitle.length <= 20 && +cardScore < 10 && +cardScore > 0) {
+      cardToBeEditted!.title = cardTitle
+      cardToBeEditted!.project = cardProject === 'Без проекта' ? false : cardProject
+      cardToBeEditted!.score = cardScore
 
-    localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
+      localStorage.setItem('bufferPanelData', JSON.stringify(panelData))
 
-    modalStore.closeModal()
+      modalStore.closeModal()
+    }
   }
 
   function deleteCard (index: number, obj: Card) {

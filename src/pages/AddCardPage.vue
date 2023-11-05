@@ -10,6 +10,7 @@
         <div class="q-mt-md">
           <div class="text-primary caption">Заголовок *:</div>
           <q-input
+            :rules="[ val => val.length <= 20 || 'Превышен лимит в 20 символов']"
             :loading="panelStore.isLoading"
             :disable="panelStore.isLoading"
             dense
@@ -45,6 +46,7 @@
         <div class="q-mt-md">
           <div class="text-primary caption">Балл *:</div>
           <q-input
+            :rules="[ val => +val <= 10 || 'Введите значение ниже', val => +val > 0 || 'Введите значение выше']"
             :loading="panelStore.isLoading"
             :disable="panelStore.isLoading"
             class="score"
@@ -96,9 +98,11 @@ const modalsStore = useModalsStore()
 const router = useRouter()
 
 function addCardWithStage () {
-  crudStore.addCard(bufferStore.stages.indexOf(modalsStore.selectStage) + 1, modalsStore.cardHeading, modalsStore.selectModal, modalsStore.score)
-  modalsStore.selectStage = 'Стадия 1'
-  router.push({ path: '/' })
+  if (modalsStore.cardHeading.length <= 20 && modalsStore.score < 10 && +modalsStore.score > 0) {
+    crudStore.addCard(bufferStore.stages.indexOf(modalsStore.selectStage) + 1, modalsStore.cardHeading, modalsStore.selectModal, modalsStore.score)
+    modalsStore.selectStage = 'Стадия 1'
+    router.push({ path: '/' })
+  }
 }
 
 function close () {

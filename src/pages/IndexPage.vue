@@ -191,6 +191,9 @@
         <div class="q-mt-md">
           <div class="text-primary caption">Заголовок *:</div>
           <q-input
+            :rules="[ val => val.length <= 20 || 'Превышен лимит в 20 символов']"
+            bottom-slots
+            counter
             dense
             outlined
             bg-color="positive"
@@ -210,6 +213,7 @@
         <div class="q-mt-md">
           <div class="text-primary caption">Балл *:</div>
           <q-input
+            :rules="[ val => +val <= 10 || 'Введите значение ниже', val => +val > 0 || 'Введите значение выше']"
             class="score"
             dense
             outlined
@@ -259,6 +263,9 @@
         <div class="q-mt-md">
           <div class="text-primary caption">Заголовок *:</div>
           <q-input
+            :rules="[ val => val.length <= 20 || 'Превышен лимит в 20 символов']"
+            bottom-slots
+            counter
             dense
             outlined
             bg-color="positive"
@@ -278,6 +285,7 @@
         <div class="q-mt-md">
           <div class="text-primary caption">Балл *:</div>
           <q-input
+            :rules="[ val => +val <= 10 || 'Введите значение ниже', val => +val > 0 || 'Введите значение выше']"
             class="score"
             dense
             outlined
