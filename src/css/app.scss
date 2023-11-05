@@ -76,19 +76,44 @@ body {
   }
 }
 
-.q-select {
-  i {
-    color: #D5DCE5;
-    position: relative;
+@media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) {
+  .q-select {
+    i {
+      top: -3px;
+      color: #D5DCE5;
+      position: relative;
 
-    &::before {
-      position: absolute;
-      content: url("../assets/toggle.svg");
+      &::before {
+        position: absolute;
+        content: url("../assets/toggle.svg");
+      }
+    }
+  }
+
+}
+
+@-moz-document url-prefix() {
+  .q-select {
+    i {
+      top: 0;
+      color: #D5DCE5;
+      position: relative;
+
+      &::before {
+        position: absolute;
+        content: url("../assets/toggle.svg");
+      }
     }
   }
 }
 
 .q-field__control {
+
+  .q-field__marginal {
+    font-size: 0;
+    margin: 0 5px;
+  }
+
   &::before, &::after {
     border: 0 !important;
   }
