@@ -103,7 +103,14 @@ export const usePanelStore = defineStore('panel', () => {
   const descendOrder = (a: Card, b: Card) => b.score - a.score
   const ascendOrder = (a: Card, b: Card) => a.score - b.score
 
-  function triggerModalEdit (column: Column, card: Card) {
+  function triggerModalEdit (column: PanelDataColumn, card: Card, index: number) {
+    selectFilter.value = 'Не выбрано'
+
+    emptyCardsBuffer(panelData, index)
+
+    column.sortedDown = false
+    column.sortedUp = false
+
     modalEditCard.isOpen = true
     modalEditCard.id = card.id
     modalEditCard.stage = column.id

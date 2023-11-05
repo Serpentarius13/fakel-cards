@@ -109,7 +109,7 @@
                           <span>{{ card.title }}</span>
                         </div>
                         <img
-                          @click="panelStore.triggerModalEdit(column, card)"
+                          @click="panelStore.triggerModalEdit(column, card, index)"
                           class="cursor-pointer"
                           src ="../assets/edit.svg"
                           alt="edit"
