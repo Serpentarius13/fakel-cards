@@ -42,8 +42,9 @@
             </template>
           </q-btn>
           <q-btn
+            @click="saveCurrentPanelData(panelStore.panelData)"
             :loading="panelStore.isLoading"
-            :disable="panelStore.isLoading"
+            :disable="panelStore.isLoading || filteringStore.selectFilter !== 'Не выбрано'"
             no-caps
             class="q-px-lg"
             color="accent"
@@ -303,6 +304,7 @@
 import draggable from 'vuedraggable'
 
 import { watch } from 'vue'
+import { PanelData } from '../components/models'
 import { usePanelStore } from '../stores/panel-store'
 import { useFilteringStore } from '../stores/filtering-store'
 import { useBufferStore } from '../stores/buffer-store'
@@ -316,6 +318,17 @@ const bufferStore = useBufferStore()
 const sortingStore = useSortingStore()
 const modalsStore = useModalsStore()
 const crudStore = useCrudStore()
+
+function saveCurrentPanelData (arr: PanelData) {
+  panelStore.isLoading = true
+
+  setTimeout(() => {
+    localStorage.setItem('panelData', JSON.stringify(arr))
+    bufferStore.rewriteBuffer(arr)
+
+    panelStore.isLoading = false
+  }, 2000)
+}
 
 watch(() => filteringStore.selectFilter, () => {
   bufferStore.projectsFilter
