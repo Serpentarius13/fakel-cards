@@ -100,35 +100,34 @@
                 />
               </div>
             </div>
-            <div v-if="column.cards?.length">
-              <draggable group="cards" itemKey="id" :list="column.cards">
-                <template #item="{ element }">
-                  <div class="text-red text-6">{{ element.title }}</div>
-                </template>
-              </draggable>
-              <div v-for="card in column.cards" :key="card.id">
+            <draggable
+              group="cards"
+              itemKey="id"
+              :list="column.cards"
+              @change="rewriteBuffer"
+            >
+              <template #item="{ element }">
                 <div class="bg-white card-section column justify-between q-mt-md">
                   <div class="q-qutter-y-xs">
                     <div class="row justify-between">
                       <div class="row q-gutter-x-sm">
                         <div class="card-heading">
-                          <span>{{ card.title }}</span>
+                          <span>{{ element.title }}</span>
                         </div>
                         <img
-                          @click="modalsStore.triggerModalEdit(column, card)"
+                          @click="modalsStore.triggerModalEdit(column, element)"
                           class="cursor-pointer"
                           src ="../assets/edit.svg"
                           alt="edit"
                         />
                         <img
-                          @click="crudStore.deleteCard(index, card)"
+                          @click="crudStore.deleteCard(index, element)"
                           class="cursor-pointer"
                           src ="../assets/delete.svg"
                           alt="delete"
                         />
                       </div>
                       <img
-                        v-if="filteringStore.selectFilter === 'Не выбрано'"
                         class="cursor-pointer"
                         src ="../assets/drag.svg"
                         alt="drag"
@@ -136,20 +135,18 @@
                     </div>
                     <div class="text-primary">
                       <span class="caption">Балл: </span>
-                      <span class="text-dark caption bold-caption">{{ card.score }}</span>
+                      <span class="text-dark caption bold-caption">{{ element.score }}</span>
                     </div>
                   </div>
-                  <q-card v-if="card.project" flat class="bg-secondary flex flex-center project">
-                    <span class="text-info">{{ card.project }}</span>
+                  <q-card v-if="element.project" flat class="bg-secondary flex flex-center project">
+                    <span class="text-info">{{ element.project }}</span>
                   </q-card>
                 </div>
-              </div>
-            </div>
-            <div v-else>
-              <div class="bg-warning card-section empty-section flex flex-center">
-                <div class="text-primary">
-                  <span>Список пуст</span>
-                </div>
+              </template>
+            </draggable>
+            <div v-if="!column.cards?.length" class="bg-warning card-section empty-section flex flex-center">
+              <div class="text-primary">
+                <span>Список пуст</span>
               </div>
             </div>
           </q-card-section>
@@ -317,6 +314,10 @@ const bufferStore = useBufferStore()
 const sortingStore = useSortingStore()
 const modalsStore = useModalsStore()
 const crudStore = useCrudStore()
+
+function rewriteBuffer () {
+  localStorage.setItem('bufferPanelData', JSON.stringify(panelStore.panelData))
+}
 
 watch(() => filteringStore.selectFilter, () => {
   bufferStore.projectsFilter
