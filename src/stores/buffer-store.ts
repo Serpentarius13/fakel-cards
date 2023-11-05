@@ -7,12 +7,12 @@ export const useBufferStore = defineStore('buffer', () => {
   const panelStore = usePanelStore()
 
   const cardsBuffer = reactive([[], [], [], []] as Card[][])
-  const panelData = ref(panelStore.panelData)
+  const panelData = reactive(panelStore.panelData)
 
   function emptyColumns () {
-    panelData.value.length = 0
+    panelData.length = 0
     const bufferPanelData = JSON.parse(localStorage.getItem('bufferPanelData') || '{}')
-    bufferPanelData.forEach((column: PanelDataColumn) => panelData.value.push(column))
+    bufferPanelData.forEach((column: PanelDataColumn) => panelData.push(column))
   }
 
   function emptyCardsBuffer (item: PanelData, index: number) {

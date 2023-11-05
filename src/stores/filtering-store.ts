@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { usePanelStore } from './panel-store'
 import { useBufferStore } from './buffer-store'
 
@@ -9,17 +9,17 @@ export const useFilteringStore = defineStore('filtering', () => {
   const panelStore = usePanelStore()
   const bufferStore = useBufferStore()
 
-  const panelData = ref(panelStore.panelData)
-  const cardsBuffer = ref(bufferStore.cardsBuffer)
+  const panelData = reactive(panelStore.panelData)
+  const cardsBuffer = reactive(bufferStore.cardsBuffer)
 
   function filterCards (value: boolean | string) {
-    panelData.value.forEach((column) => {
+    panelData.forEach((column) => {
       column.cards = column.cards?.filter((card) => card.project === value)
     })
   }
 
   function activateFilter (index: number) {
-    cardsBuffer.value.forEach((arr) => { arr.length = 0 })
+    cardsBuffer.forEach((arr) => { arr.length = 0 })
 
     if (selectFilter.value === `Проект ${index}`) {
       bufferStore.emptyColumns()
