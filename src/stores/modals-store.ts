@@ -1,13 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
 import { PanelDataColumn, EditCard, Column, Card } from '../components/models'
-import { useFilteringStore } from './filtering-store'
 import { useBufferStore } from './buffer-store'
 import { usePanelStore } from './panel-store'
 
 export const useModalsStore = defineStore('modals', () => {
   const panelStore = usePanelStore()
-  const filteringStore = useFilteringStore()
   const bufferStore = useBufferStore()
 
   const selectStage = ref<string>('Стадия 1')
@@ -25,18 +23,13 @@ export const useModalsStore = defineStore('modals', () => {
   const selectModal = ref<boolean | string>('Без проекта')
 
   const panelData = reactive(panelStore.panelData)
-  const selectFilter = ref(filteringStore.selectFilter)
 
   function triggerModalAdd (column: Column) {
-    selectFilter.value = 'Не выбрано'
-
     modalAddCard.isOpen = true
     modalAddCard.stage = column.id
   }
 
   function triggerModalEdit (column: PanelDataColumn, card: Card, index: number) {
-    selectFilter.value = 'Не выбрано'
-
     bufferStore.emptyCardsBuffer(panelData, index)
 
     column.sortedDown = false

@@ -176,6 +176,7 @@
           </div>
           <div class="self-start q-mt-xs">
             <img
+              @click="modalsStore.closeModal"
               class="cursor-pointer"
               src ="../assets/close.svg"
               alt="close"
@@ -243,6 +244,7 @@
           </div>
           <div class="self-start q-mt-xs">
             <img
+              @click="modalsStore.closeModal"
               class="cursor-pointer"
               src ="../assets/close.svg"
               alt="close"
@@ -312,5 +314,9 @@ const crudStore = useCrudStore()
 watch(() => filteringStore.selectFilter, () => {
   bufferStore.projectsFilter
     .forEach((option, index) => filteringStore.activateFilter(++index))
+})
+
+watch(() => modalsStore.modalAddCard.isOpen || modalsStore.modalEditCard.isOpen, () => {
+  filteringStore.selectFilter = 'Не выбрано'
 })
 </script>
