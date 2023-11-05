@@ -101,6 +101,11 @@
               </div>
             </div>
             <div v-if="column.cards?.length">
+              <draggable group="cards" itemKey="id" :list="column.cards">
+                <template #item="{ element }">
+                  <div class="text-red text-6">{{ element.title }}</div>
+                </template>
+              </draggable>
               <div v-for="card in column.cards" :key="card.id">
                 <div class="bg-white card-section column justify-between q-mt-md">
                   <div class="q-qutter-y-xs">
@@ -296,6 +301,8 @@
 </template>
 
 <script setup lang="ts">
+import draggable from 'vuedraggable'
+
 import { watch } from 'vue'
 import { usePanelStore } from '../stores/panel-store'
 import { useFilteringStore } from '../stores/filtering-store'
