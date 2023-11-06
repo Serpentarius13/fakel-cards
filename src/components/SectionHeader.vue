@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { PanelData } from '../components/models'
+import { PanelData } from '../stores/models'
 import { usePanelStore } from '../stores/panel-store'
 import { useFilteringStore } from '../stores/filtering-store'
 import { useBufferStore } from '../stores/buffer-store'

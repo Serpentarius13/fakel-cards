@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import { PanelDataColumn, EditCard, Column, Card } from '../components/models'
+import { PanelDataColumn, EditCard, Column, Card } from './models'
 import { usePanelStore } from './panel-store'
 
 export const useModalsStore = defineStore('modals', () => {

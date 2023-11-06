@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
-import { PanelData, Card } from '../components/models'
+import { PanelData, Card } from './models'
 import { useBufferStore } from './buffer-store'
 
 export const useSortingStore = defineStore('sorting', () => {

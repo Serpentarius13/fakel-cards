@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import { PanelData, PanelDataColumn, Column, Card, Project, Response } from '../components/models'
+import { PanelData, PanelDataColumn, Column, Card, Project, Response } from './models'
 import COLUMNS from '../json/columns.json'
 import CARDS from '../json/cards.json'
 import PROJECTS from '../json/projects.json'

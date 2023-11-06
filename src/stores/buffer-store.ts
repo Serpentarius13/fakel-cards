@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
-import { PanelData, PanelDataColumn, Card } from '../components/models'
+import { PanelData, PanelDataColumn, Card } from './models'
 
 export const useBufferStore = defineStore('buffer', () => {
   const cardsBuffer = reactive([[], [], [], []] as Card[][])
